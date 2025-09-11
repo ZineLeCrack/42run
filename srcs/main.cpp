@@ -1,10 +1,36 @@
 #include "Includes.hpp"
 
+static Game *game;
 static double c = 0;
+
+void drawText(const char *text, float x, float y, float scale) {
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0, 2560, 0, 1600);
+
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+
+    glTranslatef(x, y, 0);
+    glScalef(scale, scale, scale);
+
+    glColor3f(0.0, 1.0, 0.0);
+
+    for (int i = 0; text[i] != '\0'; i++) {
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+    }
+
+    glPopMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+}
 
 void	display() {
 	glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -35,26 +61,18 @@ void	display() {
 		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 0.0, i + 0.0);
 	}
 
-	// glColor3d(1.0, 0.0, 0.0); glVertex3d(1.0, 0.0, 1.0);
-	// glColor3d(1.0, 0.0, 0.0); glVertex3d(1.0, 1.0, 1.0);
-	// glColor3d(1.0, 0.0, 0.0); glVertex3d(1.0, 1.0, 0.0);
-	// glColor3d(1.0, 0.0, 0.0); glVertex3d(1.0, 0.0, 0.0);
-
-	// glColor3d(1.0, 1.0, 0.0); glVertex3d(1.0, 0.0, 2.0);
-	// glColor3d(1.0, 1.0, 0.0); glVertex3d(1.0, 1.0, 2.0);
-	// glColor3d(1.0, 1.0, 0.0); glVertex3d(1.0, 1.0, 1.0);
-	// glColor3d(1.0, 1.0, 0.0); glVertex3d(1.0, 0.0, 1.0);
-
 	glEnd();
+	
+	drawText(to_string(game->get_points()).c_str(), 40, 1500, 0.5f);
 
-	c += 0.2;
+	c += 0.1;
 
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
 
 int	main(int ac, char **av) {
-	Game *game = new Game();
+	game = new Game();
 
 	glutInit(&ac, av);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
