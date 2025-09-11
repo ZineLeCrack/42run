@@ -8,9 +8,23 @@ void	loadTextures()
 {
 	textureId[0] = SOIL_load_OGL_texture("imgs/floor.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
 	textureId[1] = SOIL_load_OGL_texture("imgs/celling.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[2] = SOIL_load_OGL_texture("imgs/entry_midgard.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[2] = SOIL_load_OGL_texture("imgs/paint1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[3] = SOIL_load_OGL_texture("imgs/paint2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[4] = SOIL_load_OGL_texture("imgs/paint3.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[5] = SOIL_load_OGL_texture("imgs/paint4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[6] = SOIL_load_OGL_texture("imgs/paint5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[7] = SOIL_load_OGL_texture("imgs/42_1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[8] = SOIL_load_OGL_texture("imgs/42_2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[9] = SOIL_load_OGL_texture("imgs/right_wall_corridor1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[10] = SOIL_load_OGL_texture("imgs/right_wall_corridor2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[11] = SOIL_load_OGL_texture("imgs/right_wall_corridor3.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[12] = SOIL_load_OGL_texture("imgs/right_wall_corridor4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[13] = SOIL_load_OGL_texture("imgs/right_wall_corridor5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[14] = SOIL_load_OGL_texture("imgs/right_wall_corridor6.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[15] = SOIL_load_OGL_texture("imgs/pnj1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[16] = SOIL_load_OGL_texture("imgs/pnj2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);	
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 17; i++) {
 		if (!textureId[i]) {
 			cerr << RED "SOIL Error at texture " << i << ": " << SOIL_last_result() << "." << endl;
 		}

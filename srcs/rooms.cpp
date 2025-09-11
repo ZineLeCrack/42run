@@ -2,25 +2,8 @@
 
 void	corridor(GLuint textureID[])
 {
-	glBindTexture(GL_TEXTURE_2D, textureID[2]);
 	
-	glBegin(GL_QUADS);
-
-	for (double i = 0; i < 50 ; i += 1.0) {
-		glTexCoord2d(0.0, 0.0); glVertex3d(0.5, 0.0, i + 1.0);
-		glTexCoord2d(0.0, 1.0); glVertex3d(0.5, 1.0, i + 1.0);
-		glTexCoord2d(1.0, 1.0); glVertex3d(0.5, 1.0, i + 0.0);
-		glTexCoord2d(1.0, 0.0); glVertex3d(0.5, 0.0, i + 0.0);
-
-		glTexCoord2d(0.0, 0.0); glVertex3d(-0.5, 0.0, i + 1.0);
-		glTexCoord2d(0.0, 1.0); glVertex3d(-0.5, 1.0, i + 1.0);
-		glTexCoord2d(1.0, 1.0); glVertex3d(-0.5, 1.0, i + 0.0);
-		glTexCoord2d(1.0, 0.0); glVertex3d(-0.5, 0.0, i + 0.0);
-	}
-
-	glEnd();
-
-	glBindTexture(GL_TEXTURE_2D, textureID[0]);
+	glBindTexture(GL_TEXTURE_2D, textureID[FLOOR]);
 	
 	glBegin(GL_QUADS);
 
@@ -33,7 +16,7 @@ void	corridor(GLuint textureID[])
 
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, textureID[1]);
+	glBindTexture(GL_TEXTURE_2D, textureID[CELLING]);
 	
 	glBegin(GL_QUADS);
 
@@ -41,6 +24,24 @@ void	corridor(GLuint textureID[])
 		glTexCoord2d(0.0, 0.0); glVertex3d(-0.5, 0.0, i + 1.0);
 		glTexCoord2d(0.0, 1.0); glVertex3d(0.5, 0.0, i + 1.0);
 		glTexCoord2d(1.0, 1.0); glVertex3d(0.5, 0.0, i + 0.0);
+		glTexCoord2d(1.0, 0.0); glVertex3d(-0.5, 0.0, i + 0.0);
+	}
+
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, textureID[PAINT_4]);
+	
+	glBegin(GL_QUADS);
+
+	for (double i = 0; i < 50 ; i += 1.0) {
+		glTexCoord2d(0.0, 0.0); glVertex3d(0.5, 0.0, i + 1.0);
+		glTexCoord2d(0.0, 1.0); glVertex3d(0.5, 1.0, i + 1.0);
+		glTexCoord2d(1.0, 1.0); glVertex3d(0.5, 1.0, i + 0.0);
+		glTexCoord2d(1.0, 0.0); glVertex3d(0.5, 0.0, i + 0.0);
+
+		glTexCoord2d(0.0, 0.0); glVertex3d(-0.5, 0.0, i + 1.0);
+		glTexCoord2d(0.0, 1.0); glVertex3d(-0.5, 1.0, i + 1.0);
+		glTexCoord2d(1.0, 1.0); glVertex3d(-0.5, 1.0, i + 0.0);
 		glTexCoord2d(1.0, 0.0); glVertex3d(-0.5, 0.0, i + 0.0);
 	}
 

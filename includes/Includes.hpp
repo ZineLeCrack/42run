@@ -24,3 +24,23 @@ void	corridor(GLuint textureId[]);
 
 /*-------- Namespace -------*/
 using namespace std;
+
+/*--------- DEFINES --------*/
+#define FLOOR					0
+#define CELLING					1
+#define PAINT_1					2
+#define PAINT_2					3
+#define PAINT_3					4
+#define PAINT_4					5
+#define PAINT_5					6
+#define LOGO_42_1				7
+#define LOGO_42_2				8
+#define RIGHT_WALL_CORRIDOR_1	9
+#define RIGHT_WALL_CORRIDOR_2	10
+#define RIGHT_WALL_CORRIDOR_3	11
+#define RIGHT_WALL_CORRIDOR_4	12
+#define RIGHT_WALL_CORRIDOR_5	13
+#define RIGHT_WALL_CORRIDOR_6	14
+#define PNJ_1					15
+#define PNJ_2					16
+
