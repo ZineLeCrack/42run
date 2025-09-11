@@ -46,14 +46,14 @@ void	wall(GLuint textureId[], int tex, double i, double z) {
 
 void	corridor(GLuint textureID[], double z) {
 	
-	for (double i = 0; i < 6 ; i += 1.0) {
-		floor(textureID, i, z);
+	for (int i = 0; i < 30 ; i += 1.0) {
+		floor(textureID, i, z - (int)z);
 	}
 
-	for (double i = 0; i < 6 ; i += 1.0) {
-		celling(textureID, i, z);
+	for (int i = 0; i < 30 ; i += 1.0) {
+		celling(textureID, i, z - (int)z);
 	}
 
-	for (int i = 0; i < 6; i++)
-		wall(textureID, RIGHT_WALL_CORRIDOR_1 + i, (double)i, z);
+	for (int i = 0; i < 30; i++)
+		wall(textureID, RIGHT_WALL_CORRIDOR_1 + (i + (int)z) % 6, i, z - (int)z);
 }

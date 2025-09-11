@@ -1,7 +1,7 @@
 #include "Includes.hpp"
 
 static Game *game;
-static double c = 0;
+static double z = 0;
 static GLuint textureId[3];
 
 void	loadTextures()
@@ -65,11 +65,11 @@ void	display() {
 
 	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
 
-	corridor(textureId, c - (int)c);
+	corridor(textureId, z);
 	
 	drawText(to_string(game->get_points()).c_str(), 40, 1500, 0.5f);
 
-	c += 0.01;
+	z += 0.01;
 
 	glutSwapBuffers();
 	glutPostRedisplay();
