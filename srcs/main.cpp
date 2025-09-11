@@ -2,7 +2,7 @@
 
 static Game *game;
 static double z = 0;
-static GLuint textureId[3];
+static GLuint textureId[17];
 
 void	loadTextures()
 {
@@ -21,7 +21,7 @@ void	loadTextures()
 	textureId[12] = SOIL_load_OGL_texture("imgs/right_wall_corridor4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
 	textureId[13] = SOIL_load_OGL_texture("imgs/right_wall_corridor5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
 	textureId[14] = SOIL_load_OGL_texture("imgs/right_wall_corridor6.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[15] = SOIL_load_OGL_texture("imgs/pnj1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[15] = SOIL_load_OGL_texture("imgs/pnj1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
 	textureId[16] = SOIL_load_OGL_texture("imgs/pnj2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);	
 
 	for (int i = 0; i < 17; i++) {
@@ -85,6 +85,8 @@ int	main(int ac, char **av) {
 	glutCreateWindow("42run");
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45, 2560.0 / 1600.0, 0.1, 100.0);
