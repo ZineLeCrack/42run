@@ -2,6 +2,20 @@
 
 static Game *game;
 static double c = 0;
+static GLuint textureId[3];
+
+void	loadTextures()
+{
+	textureId[0] = SOIL_load_OGL_texture("imgs/floor.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[1] = SOIL_load_OGL_texture("imgs/celling.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[2] = SOIL_load_OGL_texture("imgs/entry_midgard.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+
+	for (int i = 0; i < 3; i++) {
+		if (!textureId[i]) {
+			cerr << RED "SOIL Error at texture " << i << ": " << SOIL_last_result() << "." << endl;
+		}
+	}
+}
 
 void drawText(const char *text, float x, float y, float scale) {
     glMatrixMode(GL_PROJECTION);
@@ -37,31 +51,7 @@ void	display() {
 
 	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
 
-	glBegin(GL_QUADS);
-
-	for (double i = 0; i < 50 ; i += 1.0) {
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 0.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 1.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 1.0, i + 0.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 0.0, i + 0.0);
-
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 0.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 1.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 1.0, i + 0.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 0.0, i + 0.0);
-
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 1.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 1.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 1.0, i + 0.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 1.0, i + 0.0);
-
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 0.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 0.0, i + 1.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(0.5, 0.0, i + 0.0);
-		glColor3d(1.0, (int)(i + c) % 15 / 15.0, 1.0); glVertex3d(-0.5, 0.0, i + 0.0);
-	}
-
-	glEnd();
+	corridor(textureId);
 	
 	drawText(to_string(game->get_points()).c_str(), 40, 1500, 0.5f);
 
@@ -80,9 +70,13 @@ int	main(int ac, char **av) {
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow("42run");
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45, 2560.0 / 1600.0, 0.1, 100.0);
+
+	loadTextures();
+
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glutDisplayFunc(display);
 	glutMainLoop();
