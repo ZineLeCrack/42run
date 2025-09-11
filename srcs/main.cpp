@@ -65,11 +65,11 @@ void	display() {
 
 	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
 
-	corridor(textureId);
+	corridor(textureId, c - (int)c);
 	
 	drawText(to_string(game->get_points()).c_str(), 40, 1500, 0.5f);
 
-	c += 0.08;
+	c += 0.01;
 
 	glutSwapBuffers();
 	glutPostRedisplay();

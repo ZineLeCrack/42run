@@ -11,7 +11,7 @@
 #include "Game.hpp"
 
 /*------- FUNCTIONS ------ */
-void	corridor(GLuint textureId[]);
+void	corridor(GLuint textureId[], double z);
 
 /*----- DEFINE COLORS -----*/
 #define RESET	"\033[0m"
