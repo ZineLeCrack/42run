@@ -16,7 +16,7 @@ void drawText(const char *text, float x, float y, float scale) {
     glTranslatef(x, y, 0);
     glScalef(scale, scale, scale);
 
-    glColor3f(0.0, 1.0, 0.0);
+    glColor3f(0.0, 0.0, 0.0);
 
     for (int i = 0; text[i] != '\0'; i++) {
         glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
@@ -65,7 +65,7 @@ void	display() {
 	
 	drawText(to_string(game->get_points()).c_str(), 40, 1500, 0.5f);
 
-	c += 0.1;
+	c += 0.08;
 
 	glutSwapBuffers();
 	glutPostRedisplay();
