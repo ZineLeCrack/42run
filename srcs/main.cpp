@@ -1,31 +1,32 @@
 #include "Includes.hpp"
 
 static Game *game;
-static GLuint textureId[17];
 
 void	loadTextures()
 {
-	textureId[0] = SOIL_load_OGL_texture("imgs/floor.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[1] = SOIL_load_OGL_texture("imgs/celling.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[2] = SOIL_load_OGL_texture("imgs/paint1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[3] = SOIL_load_OGL_texture("imgs/paint2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[4] = SOIL_load_OGL_texture("imgs/paint3.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[5] = SOIL_load_OGL_texture("imgs/paint4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[6] = SOIL_load_OGL_texture("imgs/paint5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[7] = SOIL_load_OGL_texture("imgs/42_1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[8] = SOIL_load_OGL_texture("imgs/42_2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[9] = SOIL_load_OGL_texture("imgs/right_wall_corridor1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[10] = SOIL_load_OGL_texture("imgs/right_wall_corridor2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[11] = SOIL_load_OGL_texture("imgs/right_wall_corridor3.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[12] = SOIL_load_OGL_texture("imgs/right_wall_corridor4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[13] = SOIL_load_OGL_texture("imgs/right_wall_corridor5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[14] = SOIL_load_OGL_texture("imgs/right_wall_corridor6.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[15] = SOIL_load_OGL_texture("imgs/npc1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[16] = SOIL_load_OGL_texture("imgs/npc2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);	
+	vector<GLuint>	&textureIDs = game->get_textureIDs();
 
-	for (int i = 0; i < 17; i++) {
-		if (!textureId[i]) {
-			cerr << RED "SOIL Error at texture " << i << ": " << SOIL_last_result() << "." << endl;
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/floor.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/celling.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/paint1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/paint2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/paint3.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/paint4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/paint5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/42_1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/42_2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/right_wall_corridor1.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/right_wall_corridor2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/right_wall_corridor3.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/right_wall_corridor4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/right_wall_corridor5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/right_wall_corridor6.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/npc1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/npc2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+
+	for (vector<GLuint>::iterator i = textureIDs.begin(); i != textureIDs.end(); i++) {
+		if (!(*i)) {
+			cerr << RED "SOIL Error at texture " << (*i) << ": " << SOIL_last_result() << "." << endl;
 		}
 	}
 }
@@ -64,7 +65,7 @@ void	display() {
 
 	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
 
-	corridor(textureId, game);
+	corridor(game);
 
 	drawText(to_string((int)game->get_distance()).c_str(), 40, 1500, 0.5f);
 

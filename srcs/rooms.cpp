@@ -1,7 +1,7 @@
 #include "Includes.hpp"
 
-void	floor(GLuint textureId[], double i, double z) {
-	glBindTexture(GL_TEXTURE_2D, textureId[FLOOR]);
+void	floor(vector<GLuint> textureIDs, double i, double z) {
+	glBindTexture(GL_TEXTURE_2D, textureIDs[FLOOR]);
 
 	glBegin(GL_QUADS);
 
@@ -23,8 +23,8 @@ void	floor(GLuint textureId[], double i, double z) {
 	glEnd();
 }
 
-void	celling(GLuint textureId[], double i, double z) {
-	glBindTexture(GL_TEXTURE_2D, textureId[CELLING]);
+void	celling(vector<GLuint> textureIDs, double i, double z) {
+	glBindTexture(GL_TEXTURE_2D, textureIDs[CELLING]);
 
 	glBegin(GL_QUADS);
 
@@ -46,8 +46,8 @@ void	celling(GLuint textureId[], double i, double z) {
 	glEnd();
 }
 
-void	wall(GLuint textureId[], int tex, double i, double z) {
-	glBindTexture(GL_TEXTURE_2D, textureId[tex]);
+void	wall(vector<GLuint> textureIDs, int tex, double i, double z) {
+	glBindTexture(GL_TEXTURE_2D, textureIDs[tex]);
 
 	glBegin(GL_QUADS);
 
@@ -64,8 +64,8 @@ void	wall(GLuint textureId[], int tex, double i, double z) {
 	glEnd();
 }
 
-void	display_player(GLuint tex, double player_pos) {
-	glBindTexture(GL_TEXTURE_2D, tex);
+void	display_player(vector<GLuint> textureIDs, double player_pos) {
+	glBindTexture(GL_TEXTURE_2D, textureIDs[NPC_1]);
 
 	glBegin(GL_QUADS);
 
@@ -77,22 +77,22 @@ void	display_player(GLuint tex, double player_pos) {
 	glEnd();
 }
 
-void	corridor(GLuint textureID[], Game *game) {
-
+void	corridor(Game *game) {
+	vector<GLuint>	textureIDs = game->get_textureIDs();
 	double	distance = game->get_distance();
 	int		rounded_distance = (int)distance;
 
 	for (int i = 0; i < 30 ; i += 1.0) {
-		floor(textureID, i, distance - rounded_distance);
+		floor(textureIDs, i, distance - rounded_distance);
 	}
 
 	for (int i = 0; i < 30 ; i += 1.0) {
-		celling(textureID, i, distance - rounded_distance);
+		celling(textureIDs, i, distance - rounded_distance);
 	}
 
 	for (int i = 0; i < 30; i++) {
-		wall(textureID, RIGHT_WALL_CORRIDOR_1 + (i + rounded_distance) % 6, i, distance - (int)distance);
+		wall(textureIDs, RIGHT_WALL_CORRIDOR_1 + (i + rounded_distance) % 6, i, distance - (int)distance);
 	}
 
-	display_player(textureID[NPC_1], game->get_pos());
+	display_player(textureIDs, game->get_pos());
 }

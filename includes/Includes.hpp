@@ -13,7 +13,7 @@
 class Game;
 
 /*------- FUNCTIONS ------ */
-void	corridor(GLuint textureId[], Game *game);
+void	corridor(Game *game);
 
 /*----- DEFINE COLORS -----*/
 #define RESET	"\033[0m"
