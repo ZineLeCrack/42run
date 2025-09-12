@@ -6,12 +6,14 @@ class Game
 {
 	private:
 
-		unsigned int	_points;
+		double			_distance;
+		double			_player_pos;
 
 	public:
 
 		Game();
 		~Game();
 
-		unsigned int	get_points();
+		double			&get_distance();
+		double			&get_pos();
 };

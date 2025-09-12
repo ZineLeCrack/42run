@@ -10,8 +10,10 @@
 /*-------- CLASSES --------*/
 #include "Game.hpp"
 
+class Game;
+
 /*------- FUNCTIONS ------ */
-void	corridor(GLuint textureId[], double z);
+void	corridor(GLuint textureId[], Game *game);
 
 /*----- DEFINE COLORS -----*/
 #define RESET	"\033[0m"
@@ -41,6 +43,6 @@ using namespace std;
 #define RIGHT_WALL_CORRIDOR_4	12
 #define RIGHT_WALL_CORRIDOR_5	13
 #define RIGHT_WALL_CORRIDOR_6	14
-#define PNJ_1					15
-#define PNJ_2					16
+#define NPC_1					15
+#define NPC_2					16
 

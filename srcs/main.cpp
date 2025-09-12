@@ -1,7 +1,6 @@
 #include "Includes.hpp"
 
 static Game *game;
-static double z = 0;
 static GLuint textureId[17];
 
 void	loadTextures()
@@ -21,8 +20,8 @@ void	loadTextures()
 	textureId[12] = SOIL_load_OGL_texture("imgs/right_wall_corridor4.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
 	textureId[13] = SOIL_load_OGL_texture("imgs/right_wall_corridor5.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
 	textureId[14] = SOIL_load_OGL_texture("imgs/right_wall_corridor6.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[15] = SOIL_load_OGL_texture("imgs/pnj1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
-	textureId[16] = SOIL_load_OGL_texture("imgs/pnj2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);	
+	textureId[15] = SOIL_load_OGL_texture("imgs/npc1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);
+	textureId[16] = SOIL_load_OGL_texture("imgs/npc2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0);	
 
 	for (int i = 0; i < 17; i++) {
 		if (!textureId[i]) {
@@ -32,28 +31,28 @@ void	loadTextures()
 }
 
 void drawText(const char *text, float x, float y, float scale) {
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    gluOrtho2D(0, 2560, 0, 1600);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	gluOrtho2D(0, 2560, 0, 1600);
 
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
 
-    glTranslatef(x, y, 0);
-    glScalef(scale, scale, scale);
+	glTranslatef(x, y, 0);
+	glScalef(scale, scale, scale);
 
-    glColor3f(0.0, 0.0, 0.0);
+	glColor3f(0.0, 0.0, 0.0);
 
-    for (int i = 0; text[i] != '\0'; i++) {
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
-    }
+	for (int i = 0; text[i] != '\0'; i++) {
+		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+	}
 
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void	display() {
@@ -65,14 +64,36 @@ void	display() {
 
 	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
 
-	corridor(textureId, z);
-	
-	drawText(to_string(game->get_points()).c_str(), 40, 1500, 0.5f);
+	corridor(textureId, game);
 
-	z += 0.01;
+	drawText(to_string((int)game->get_distance()).c_str(), 40, 1500, 0.5f);
+
+	game->get_distance() += 0.01;
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+}
+
+void special_keypress(int key, int x, int y) {
+	(void)x;
+	(void)y;
+
+	if (key == GLUT_KEY_LEFT) {
+		game->get_pos() -= game->get_pos() > -0.5 ? 0.6 : 0;
+	}
+
+	else if (key == GLUT_KEY_RIGHT) {
+		game->get_pos() += game->get_pos() < 0.5 ? 0.6 : 0;
+	}
+}
+
+void keypress(unsigned char key, int x, int y) {
+	(void)x;
+	(void)y;
+
+	if (key == ' ') {
+
+	}
 }
 
 int	main(int ac, char **av) {
@@ -94,6 +115,8 @@ int	main(int ac, char **av) {
 	loadTextures();
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glutKeyboardFunc(keypress);
+	glutSpecialFunc(special_keypress);
 	glutDisplayFunc(display);
 	glutMainLoop();
 
