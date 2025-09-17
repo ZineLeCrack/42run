@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include <vector>
+#include <sys/time.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <SOIL/SOIL.h>
@@ -14,6 +15,7 @@ class Game;
 
 /*------- FUNCTIONS ------ */
 void	corridor(Game *game);
+int	randint(int x);
 
 /*----- DEFINE COLORS -----*/
 #define RESET	"\033[0m"

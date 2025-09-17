@@ -2,7 +2,7 @@
 
 static Game *game;
 
-void	loadTextures()
+static void	loadTextures()
 {
 	vector<GLuint>	&textureIDs = game->get_textureIDs();
 
@@ -31,7 +31,7 @@ void	loadTextures()
 	}
 }
 
-void drawText(const char *text, float x, float y, float scale) {
+static void drawText(const char *text, float x, float y, float scale) {
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
@@ -56,7 +56,7 @@ void drawText(const char *text, float x, float y, float scale) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
-void	display() {
+static void	display() {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -75,7 +75,7 @@ void	display() {
 	glutPostRedisplay();
 }
 
-void special_keypress(int key, int x, int y) {
+static void special_keypress(int key, int x, int y) {
 	(void)x;
 	(void)y;
 
@@ -88,7 +88,7 @@ void special_keypress(int key, int x, int y) {
 	}
 }
 
-void keypress(unsigned char key, int x, int y) {
+static void keypress(unsigned char key, int x, int y) {
 	(void)x;
 	(void)y;
 
