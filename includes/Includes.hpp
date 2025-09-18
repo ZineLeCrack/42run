@@ -47,4 +47,5 @@ using namespace std;
 #define RIGHT_WALL_CORRIDOR_6	14
 #define NPC_1					15
 #define NPC_2					16
+#define VAL						17
 

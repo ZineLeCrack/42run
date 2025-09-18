@@ -23,6 +23,7 @@ static void	loadTextures()
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/right_wall_corridor6.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/npc1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/npc2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/val.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 
 	for (vector<GLuint>::iterator i = textureIDs.begin(); i != textureIDs.end(); i++) {
 		if (!(*i)) {
@@ -69,7 +70,16 @@ static void	display() {
 
 	drawText(to_string((int)game->get_distance()).c_str(), 40, 1500, 0.5f);
 
-	game->get_distance() += 0.01;
+	if (game->get_is_jumping()) {
+		if (game->get_height()  < -0.5)
+			game->get_is_jumping() = false;
+		else
+			game->get_height() -= 0.01;
+	}
+	else if (game->get_height() < 0.0) {
+		game->get_height() += 0.01;
+	}
+	game->get_distance() += 0.02;
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -92,8 +102,8 @@ static void keypress(unsigned char key, int x, int y) {
 	(void)x;
 	(void)y;
 
-	if (key == ' ') {
-
+	if (key == ' ' && game->get_height() >= 0.0) {
+		game->get_is_jumping() = true;
 	}
 }
 
