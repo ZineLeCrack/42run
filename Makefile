@@ -1,7 +1,7 @@
 NAME = 42run
 
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -g -std=c++11 -Iincludes
+CFLAGS = -Wall -Wextra -Werror -g3 -std=c++11 -Iincludes
 GLFLAGS = -lGL -lGLU -lglut -lSOIL
 
 SRCDIR = srcs
