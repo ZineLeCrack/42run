@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -g -std=c++11 -Iincludes
 GLFLAGS = -lGL -lGLU -lglut -lSOIL
 
 SRCDIR = srcs
-OBJDIR = obj
+OBJDIR = objs
 
 SRCS = Game.cpp Map.cpp rooms.cpp utils.cpp main.cpp
 SRCS := $(addprefix $(SRCDIR)/, $(SRCS))
