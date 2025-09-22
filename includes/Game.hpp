@@ -28,4 +28,5 @@ class Game
 		double			&get_height();
 
 		void			gen_start();
+		void			gen_next();
 };

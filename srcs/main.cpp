@@ -24,6 +24,7 @@ static void	loadTextures()
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/npc1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/npc2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/val.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/boom.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 
 	for (vector<GLuint>::iterator i = textureIDs.begin(); i != textureIDs.end(); i++) {
 		if (!(*i)) {
@@ -65,28 +66,50 @@ static void	display() {
 	glLoadIdentity();
 
 	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
-
-	corridor(game);
-
+	
 	// drawText(to_string((int)game->get_distance()).c_str(), 40, 1500, 0.5f);
+	
+	corridor(game);
+	
+	if (int obs = game->get_map()[1]->get_obs()) {
+		double	pos = game->get_pos();
+		if (game->get_height() > -0.2 && (game->get_pos() == (obs - 2) * 0.6)) {
+			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
+
+			glBegin(GL_QUADS);
+
+			glTexCoord2d(0.0, 0.0); glVertex3d(-0.35 + pos, 0.2, 0.9);
+			glTexCoord2d(0.0, 1.0); glVertex3d(-0.35 + pos, 0.9, 0.9);
+			glTexCoord2d(1.0, 1.0); glVertex3d(0.35 + pos, 0.9, 0.9);
+			glTexCoord2d(1.0, 0.0); glVertex3d(0.35 + pos, 0.2, 0.9);
+
+			glEnd();
+
+			glutSwapBuffers();
+			glutPostRedisplay();
+
+			sleep(1);
+			exit(0);
+		}
+	}
 
 	if (game->get_is_jumping()) {
-		if (game->get_height()  < -0.5)
+		if (game->get_height() < -0.5)
 			game->get_is_jumping() = false;
 		else
-			game->get_height() -= 0.01;
+			game->get_height() -= (game->get_height() + 0.7) * 0.05;
 	}
 	else if (game->get_height() < 0.0) {
-		game->get_height() += 0.01;
+		game->get_height() += (game->get_height() + 0.55) * 0.05;
 	}
 
 	double &d = game->get_distance();
-	d += 0.03125;
+	d += 0.0625;
 
 	if (d == 1.0) {
 		d = 0;
-		game->get_map().push_back(game->get_map()[0]);
 		game->get_map().erase(game->get_map().begin());
+		game->gen_next();
 	}
 
 	glutSwapBuffers();

@@ -23,3 +23,8 @@ void			Game::gen_start() {
 		_map.push_back(room);
 	}
 }
+
+void			Game::gen_next() {
+	Map	*next = new Map(randint(13) + 2, randint(13) + 2, randint(5) == 0 ? randint(4) : 0);
+	_map.push_back(next);
+}

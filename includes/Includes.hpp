@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstring>
 #include <vector>
+#include <unistd.h>
 #include <sys/time.h>
 #include <GL/glut.h>
 #include <GL/gl.h>
@@ -50,3 +51,4 @@ using namespace std;
 #define NPC_1					15
 #define NPC_2					16
 #define VAL						17
+#define BOOM					18
