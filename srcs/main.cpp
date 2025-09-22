@@ -25,6 +25,16 @@ static void	loadTextures()
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/npc2.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/val.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 	textureIDs.push_back(SOIL_load_OGL_texture("imgs/boom.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/0.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/1.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/2.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/3.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/4.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/5.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/6.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/7.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/8.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
+	textureIDs.push_back(SOIL_load_OGL_texture("imgs/9.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, 0));
 
 	for (vector<GLuint>::iterator i = textureIDs.begin(); i != textureIDs.end(); i++) {
 		if (!(*i)) {
@@ -58,6 +68,27 @@ static void	loadTextures()
 // 	glMatrixMode(GL_MODELVIEW);
 // }
 
+static void	put_score(unsigned long long n, unsigned int i) {
+	if (n < 10) {
+		double	val = (double)i;
+		glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[NB_0 + n]);
+
+		glBegin(GL_QUADS);
+
+		glTexCoord2d(0.0, 0.0); glVertex3d(-0.95 + (val * 0.05), 0.1, 0.95);
+		glTexCoord2d(0.0, 1.0); glVertex3d(-0.95 + (val * 0.05), 0.15, 0.95);
+		glTexCoord2d(1.0, 1.0); glVertex3d(-0.9 + (val * 0.05), 0.15, 0.95);
+		glTexCoord2d(1.0, 0.0); glVertex3d(-0.9 + (val * 0.05), 0.1, 0.95);
+
+		glEnd();
+	}
+	else
+	{
+		put_score(n % 10, i);
+		put_score(n / 10, i - 1);
+	}
+}
+
 static void	display() {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -67,9 +98,9 @@ static void	display() {
 
 	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
 	
-	// drawText(to_string((int)game->get_distance()).c_str(), 40, 1500, 0.5f);
-	
 	corridor(game);
+	unsigned long long	score = game->get_score();
+	put_score(score, to_string(score).size());
 	
 	if (int obs = game->get_map()[0]->get_obs()) {
 		double	pos = game->get_pos();
@@ -111,6 +142,8 @@ static void	display() {
 		game->get_map().erase(game->get_map().begin());
 		game->gen_next();
 	}
+
+	game->get_score()++;
 
 	glutSwapBuffers();
 	glutPostRedisplay();

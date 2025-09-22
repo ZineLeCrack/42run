@@ -52,3 +52,13 @@ using namespace std;
 #define NPC_2					16
 #define VAL						17
 #define BOOM					18
+#define NB_0					19
+#define NB_1					20
+#define NB_2					21
+#define NB_3					22
+#define NB_4					23
+#define NB_5					24
+#define NB_6					25
+#define NB_7					26
+#define NB_8					27
+#define NB_9					28
