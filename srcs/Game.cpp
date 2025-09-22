@@ -3,7 +3,11 @@
 
 Game::Game(): _score(0), _distance(0.0), _player_pos(0.0), _is_jumping(false), _height(0.0) {}
 
-Game::~Game() {}
+Game::~Game() {
+	for (vector<Map *>::iterator i = _map.begin(); i != _map.end(); i++) {
+		delete (*i);
+	}
+}
 
 vector<GLuint>		&Game::get_textureIDs() { return _textureIDs; }
 
