@@ -32,30 +32,30 @@ static void	loadTextures()
 	}
 }
 
-static void drawText(const char *text, float x, float y, float scale) {
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	gluOrtho2D(0, 2560, 0, 1600);
+// static void drawText(const char *text, float x, float y, float scale) {
+// 	glMatrixMode(GL_PROJECTION);
+// 	glPushMatrix();
+// 	glLoadIdentity();
+// 	gluOrtho2D(0, 2560, 0, 1600);
 
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
+// 	glMatrixMode(GL_MODELVIEW);
+// 	glPushMatrix();
+// 	glLoadIdentity();
 
-	glTranslatef(x, y, 0);
-	glScalef(scale, scale, scale);
+// 	glTranslatef(x, y, 0);
+// 	glScalef(scale, scale, scale);
 
-	glColor3f(0.0, 0.0, 0.0);
+// 	glColor3f(0.0, 0.0, 0.0);
 
-	for (int i = 0; text[i] != '\0'; i++) {
-		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
-	}
+// 	for (int i = 0; text[i] != '\0'; i++) {
+// 		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
+// 	}
 
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);
-}
+// 	glPopMatrix();
+// 	glMatrixMode(GL_PROJECTION);
+// 	glPopMatrix();
+// 	glMatrixMode(GL_MODELVIEW);
+// }
 
 static void	display() {
 	glClearColor(0, 0, 0, 1);
@@ -68,7 +68,7 @@ static void	display() {
 
 	corridor(game);
 
-	drawText(to_string((int)game->get_distance()).c_str(), 40, 1500, 0.5f);
+	// drawText(to_string((int)game->get_distance()).c_str(), 40, 1500, 0.5f);
 
 	if (game->get_is_jumping()) {
 		if (game->get_height()  < -0.5)
@@ -79,7 +79,15 @@ static void	display() {
 	else if (game->get_height() < 0.0) {
 		game->get_height() += 0.01;
 	}
-	game->get_distance() += 0.02;
+
+	double &d = game->get_distance();
+	d += 0.03125;
+
+	if (d == 1.0) {
+		d = 0;
+		game->get_map().push_back(game->get_map()[0]);
+		game->get_map().erase(game->get_map().begin());
+	}
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -109,6 +117,7 @@ static void keypress(unsigned char key, int x, int y) {
 
 int	main(int ac, char **av) {
 	game = new Game();
+	game->gen_start();
 
 	glutInit(&ac, av);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);

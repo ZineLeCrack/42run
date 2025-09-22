@@ -46,8 +46,19 @@ void	celling(vector<GLuint> textureIDs, double i, double z) {
 	glEnd();
 }
 
-void	wall(vector<GLuint> textureIDs, int tex, double i, double z) {
-	glBindTexture(GL_TEXTURE_2D, textureIDs[tex]);
+void	wall(vector<GLuint> textureIDs, Map *map, double i, double z) {
+	glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
+
+	glBegin(GL_QUADS);
+	
+	glTexCoord2d(0.0, 0.0); glVertex3d(-1.5, 0.0, i + 1.0 - z);
+	glTexCoord2d(0.0, 1.0); glVertex3d(-1.5, 1.0, i + 1.0 - z);
+	glTexCoord2d(1.0, 1.0); glVertex3d(-1.5, 1.0, i + 0.0 - z);
+	glTexCoord2d(1.0, 0.0); glVertex3d(-1.5, 0.0, i + 0.0 - z);
+	
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_right_wall_tex()]);
 
 	glBegin(GL_QUADS);
 
@@ -56,25 +67,16 @@ void	wall(vector<GLuint> textureIDs, int tex, double i, double z) {
 	glTexCoord2d(1.0, 1.0); glVertex3d(1.5, 1.0, i + 0.0 - z);
 	glTexCoord2d(1.0, 0.0); glVertex3d(1.5, 0.0, i + 0.0 - z);
 	
-	glTexCoord2d(0.0, 0.0); glVertex3d(-1.5, 0.0, i + 1.0 - z);
-	glTexCoord2d(0.0, 1.0); glVertex3d(-1.5, 1.0, i + 1.0 - z);
-	glTexCoord2d(1.0, 1.0); glVertex3d(-1.5, 1.0, i + 0.0 - z);
-	glTexCoord2d(1.0, 0.0); glVertex3d(-1.5, 0.0, i + 0.0 - z);
-
 	glEnd();
-	if (tex % 2 == 0) {
-		double	pos;
-		if (tex == 10)
-			pos = -0.8;
-		else if (tex == 12)
-			pos = 0.8;
-		else
-			pos = 0.0;
 
+	int	obs = map->get_obs();
+	if (obs) {
+		double	pos = (obs - 2) * 0.8;
+		
 		glBindTexture(GL_TEXTURE_2D, textureIDs[VAL]);
-
+		
 		glBegin(GL_QUADS);
-
+		
 		glTexCoord2d(0.0, 0.0); glVertex3d(-0.2 + pos, 0.75, i + 1.5 - z);
 		glTexCoord2d(0.0, 1.0); glVertex3d(-0.2 + pos, 0.9, i + 1.0 - z);
 		glTexCoord2d(1.0, 1.0); glVertex3d(0.2 + pos, 0.9, i + 1.0 - z);
@@ -111,7 +113,7 @@ void	corridor(Game *game) {
 	}
 
 	for (int i = 0; i < 30; i++) {
-		wall(textureIDs, RIGHT_WALL_CORRIDOR_1 + (i + rounded_distance) % 6, i, distance - (int)distance);
+		wall(textureIDs, game->get_map()[i], i, distance - (int)distance);
 	}
 
 	display_player(textureIDs, game->get_pos(), game->get_height());

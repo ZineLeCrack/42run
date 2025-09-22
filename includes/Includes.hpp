@@ -10,12 +10,14 @@
 
 /*-------- CLASSES --------*/
 #include "Game.hpp"
+#include "Map.hpp"
 
 class Game;
+class Map;
 
 /*------- FUNCTIONS ------ */
 void	corridor(Game *game);
-int	randint(int x);
+int		randint(int x);
 
 /*----- DEFINE COLORS -----*/
 #define RESET	"\033[0m"
@@ -48,4 +50,3 @@ using namespace std;
 #define NPC_1					15
 #define NPC_2					16
 #define VAL						17
-
