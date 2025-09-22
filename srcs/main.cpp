@@ -71,7 +71,7 @@ static void	display() {
 	
 	corridor(game);
 	
-	if (int obs = game->get_map()[1]->get_obs() && game->get_distance() > 0.2) {
+	if (int obs = game->get_map()[0]->get_obs()) {
 		double	pos = game->get_pos();
 		if (game->get_height() > -0.2 && (game->get_pos() == (obs - 2) * 0.6)) {
 			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
