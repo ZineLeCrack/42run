@@ -43,31 +43,6 @@ static void	loadTextures()
 	}
 }
 
-// static void drawText(const char *text, float x, float y, float scale) {
-// 	glMatrixMode(GL_PROJECTION);
-// 	glPushMatrix();
-// 	glLoadIdentity();
-// 	gluOrtho2D(0, 2560, 0, 1600);
-
-// 	glMatrixMode(GL_MODELVIEW);
-// 	glPushMatrix();
-// 	glLoadIdentity();
-
-// 	glTranslatef(x, y, 0);
-// 	glScalef(scale, scale, scale);
-
-// 	glColor3f(0.0, 0.0, 0.0);
-
-// 	for (int i = 0; text[i] != '\0'; i++) {
-// 		glutStrokeCharacter(GLUT_STROKE_ROMAN, text[i]);
-// 	}
-
-// 	glPopMatrix();
-// 	glMatrixMode(GL_PROJECTION);
-// 	glPopMatrix();
-// 	glMatrixMode(GL_MODELVIEW);
-// }
-
 static void	put_score(unsigned long long n, unsigned int i) {
 	if (n < 10) {
 		double	val = (double)i;
@@ -81,9 +56,7 @@ static void	put_score(unsigned long long n, unsigned int i) {
 		glTexCoord2d(1.0, 0.0); glVertex3d(-0.9 + (val * 0.05), 0.1, 0.95);
 
 		glEnd();
-	}
-	else
-	{
+	} else {
 		put_score(n % 10, i);
 		put_score(n / 10, i - 1);
 	}
