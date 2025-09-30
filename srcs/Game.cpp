@@ -27,12 +27,19 @@ glm::mat4			Game::get_MVP() { return _MVP; }
 
 void				Game::gen_start() {
 	for (unsigned char i = 0; i < 30; i++) {
-		Map	*room = new Map(randint(13) + 2, randint(13) + 2, 0);
+		Map	*room = new Map(randint(13) + 2, randint(13) + 2, NULL);
 		_map.push_back(room);
 	}
 }
 
 void				Game::gen_next() {
-	Map	*next = new Map(randint(13) + 2, randint(13) + 2, randint(5) == 0 ? randint(4) : 0);
+	int	*obs = new int[3];
+
+	bzero(obs, sizeof(int) * 3);
+	int random = randint(5);
+	if (!random) {
+		obs[randint(3)] = 1;
+	}
+	Map	*next = new Map(randint(13) + 2, randint(13) + 2, obs);
 	_map.push_back(next);
 }

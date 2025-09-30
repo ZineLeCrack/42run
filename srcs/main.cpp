@@ -145,25 +145,32 @@ static void	display() {
 	unsigned long long	score = game->get_score();
 	put_score(score, to_string(score).size());
 
-	if (int obs = game->get_map()[0]->get_obs()) {
-		double	pos = game->get_pos();
-		if (game->get_height() > -0.2 && (game->get_pos() == (obs - 2) * 0.6)) {
-			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
+	int *obs = game->get_map()[0]->get_obs();
+	if (obs) {
+		int i;
+		for (i = 0; i < 3; i++) {
+			if (obs[i]) break;
+		}
+		if (i < 3) {
+			double	pos = game->get_pos();
+			if (game->get_height() > -0.2 && (game->get_pos() == (i - 2) * 0.6)) {
+				glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
 
-			glBegin(GL_QUADS);
+				glBegin(GL_QUADS);
 
-			glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.2, 0.9));
-			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.9, 0.9));
-			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.9, 0.9));
-			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.2, 0.9));
+				glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.2, 0.9));
+				glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.9, 0.9));
+				glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.9, 0.9));
+				glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.2, 0.9));
 
-			glEnd();
+				glEnd();
 
-			glutSwapBuffers();
-			glutPostRedisplay();
+				glutSwapBuffers();
+				glutPostRedisplay();
 
-			sleep(1);
-			exit(0);
+				sleep(1);
+				exit(0);
+			}
 		}
 	}
 
