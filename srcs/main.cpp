@@ -1,6 +1,8 @@
 #include "Includes.hpp"
 
 static Game *game;
+int	keys[256];
+int	specials_keys[256];
 
 GLuint loadPNGTexture(const char* filename) {
     FILE *fp = fopen(filename, "rb");
@@ -147,6 +149,18 @@ static void	display() {
 
 	double &d = game->get_distance();
 
+	if (keys[' '] && game->get_height() >= 0.0) {
+		game->get_is_jumping() = true;
+	}
+
+	if (specials_keys[GLUT_KEY_LEFT] && game->get_pos() > -0.8) {
+		game->get_pos() -= 0.01;
+	}
+
+	if (specials_keys[GLUT_KEY_RIGHT] && game->get_pos() < 0.8) {
+		game->get_pos() += 0.01;
+	}
+
 	int *obs = game->get_map()[0]->get_obs();
 	if (obs && (d - (int)d) < 0.3) {
 		int i;
@@ -155,7 +169,8 @@ static void	display() {
 		}
 		if (i < 3) {
 			double	pos = game->get_pos();
-			if (game->get_height() > -0.1 && (game->get_pos() == (i - 1) * 0.6)) {
+			double	col = (i - 1) * 1.0;
+			if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
 				glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
 
 				glBegin(GL_QUADS);
@@ -204,27 +219,37 @@ static void special_keypress(int key, int x, int y) {
 	(void)x;
 	(void)y;
 
-	if (key == GLUT_KEY_LEFT) {
-		game->get_pos() -= game->get_pos() > -0.5 ? 0.6 : 0;
-	}
+	specials_keys[key] = 1;
+}
 
-	else if (key == GLUT_KEY_RIGHT) {
-		game->get_pos() += game->get_pos() < 0.5 ? 0.6 : 0;
-	}
+static void special_keyup(int key, int x, int y) {
+	(void)x;
+	(void)y;
+
+	specials_keys[key] = 0;
 }
 
 static void keypress(unsigned char key, int x, int y) {
 	(void)x;
 	(void)y;
 
-	if (key == ' ' && game->get_height() >= 0.0) {
-		game->get_is_jumping() = true;
-	}
+	keys[key] = 1;
+}
+
+static void keyup(unsigned char key, int x, int y) {
+	(void)x;
+	(void)y;
+
+	keys[key] = 0;
 }
 
 int	main(int ac, char **av) {
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 2560.0f / 1600.0f, 0.1f, 100.0f);
 	glm::mat4 View = glm::lookAt(glm::vec3(0.0, 0.2, -0.5), glm::vec3(0.0, 0.5, 5.0), glm::vec3(0.0, -1.0, 0.0));
+
+	bzero(keys, 1024);
+	bzero(specials_keys, 1024);
+
 	game = new Game(Projection * View);
 	game->gen_start();
 
@@ -243,6 +268,8 @@ int	main(int ac, char **av) {
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glutKeyboardFunc(keypress);
 	glutSpecialFunc(special_keypress);
+	glutKeyboardUpFunc(keyup);
+	glutSpecialUpFunc(special_keyup);
 	glutDisplayFunc(display);
 	glutMainLoop();
 
