@@ -1,3 +1,6 @@
+/*------- GL Version ------*/
+//glxinfo | grep "OpenGL version"
+
 /*-------- INCLUDES -------*/
 #include <iostream>
 #include <fstream>
