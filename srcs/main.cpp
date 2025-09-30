@@ -50,10 +50,10 @@ static void	put_score(unsigned long long n, unsigned int i) {
 
 		glBegin(GL_QUADS);
 
-		glTexCoord2d(0.0, 0.0); glVertex3d(-0.95 + (val * 0.05), 0.1, 0.95);
-		glTexCoord2d(0.0, 1.0); glVertex3d(-0.95 + (val * 0.05), 0.15, 0.95);
-		glTexCoord2d(1.0, 1.0); glVertex3d(-0.9 + (val * 0.05), 0.15, 0.95);
-		glTexCoord2d(1.0, 0.0); glVertex3d(-0.9 + (val * 0.05), 0.1, 0.95);
+		glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.95 + (val * 0.05), 0.1, 0.95));
+		glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.95 + (val * 0.05), 0.15, 0.95));
+		glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.9 + (val * 0.05), 0.15, 0.95));
+		glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.9 + (val * 0.05), 0.1, 0.95));
 
 		glEnd();
 	} else {
@@ -66,15 +66,10 @@ static void	display() {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	gluLookAt(0.0, 0.2, -0.5, 0.0, 0.5, 5.0, 0.0, -1.0, 0.0);
-	
 	corridor(game);
 	unsigned long long	score = game->get_score();
 	put_score(score, to_string(score).size());
-	
+
 	if (int obs = game->get_map()[0]->get_obs()) {
 		double	pos = game->get_pos();
 		if (game->get_height() > -0.2 && (game->get_pos() == (obs - 2) * 0.6)) {
@@ -82,10 +77,10 @@ static void	display() {
 
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(0.0, 0.0); glVertex3d(-0.35 + pos, 0.2, 0.9);
-			glTexCoord2d(0.0, 1.0); glVertex3d(-0.35 + pos, 0.9, 0.9);
-			glTexCoord2d(1.0, 1.0); glVertex3d(0.35 + pos, 0.9, 0.9);
-			glTexCoord2d(1.0, 0.0); glVertex3d(0.35 + pos, 0.2, 0.9);
+			glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.2, 0.9));
+			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.9, 0.9));
+			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.9, 0.9));
+			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.2, 0.9));
 
 			glEnd();
 
@@ -145,7 +140,9 @@ static void keypress(unsigned char key, int x, int y) {
 }
 
 int	main(int ac, char **av) {
-	game = new Game();
+	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 2560.0f / 1600.0f, 0.1f, 100.0f);
+	glm::mat4 View = glm::lookAt(glm::vec3(0.0, 0.2, -0.5), glm::vec3(0.0, 0.5, 5.0), glm::vec3(0.0, -1.0, 0.0));
+	game = new Game(Projection * View);
 	game->gen_start();
 
 	glutInit(&ac, av);
@@ -157,9 +154,6 @@ int	main(int ac, char **av) {
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(45, 2560.0 / 1600.0, 0.1, 100.0);
 
 	loadTextures();
 

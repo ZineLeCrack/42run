@@ -15,10 +15,11 @@ class Game
 		double				_player_pos;
 		bool				_is_jumping;
 		double				_height;
+		const glm::mat4	_MVP;
 
 	public:
 
-		Game();
+		Game(glm::mat4 MVP);
 		~Game();
 
 		vector<GLuint>		&get_textureIDs();
@@ -28,6 +29,7 @@ class Game
 		double				&get_pos();
 		bool				&get_is_jumping();
 		double				&get_height();
+		glm::mat4			get_MVP();
 
 		void			gen_start();
 		void			gen_next();
