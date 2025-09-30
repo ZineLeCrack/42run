@@ -5,7 +5,7 @@ static Game *game;
 GLuint loadPNGTexture(const char* filename) {
     FILE *fp = fopen(filename, "rb");
     if (!fp) {
-        std::cerr << "Erreur : impossible d'ouvrir " << filename << std::endl;
+        std::cerr << RED "Error: cannot read file." << filename << RESET << std::endl;
         return 0;
     }
 
@@ -13,7 +13,7 @@ GLuint loadPNGTexture(const char* filename) {
     png_byte header[8];
     fread(header, 1, 8, fp);
     if (png_sig_cmp(header, 0, 8)) {
-        std::cerr << "Erreur : " << filename << " n'est pas un PNG." << std::endl;
+        std::cerr << RED "Error: " << filename << " is not a PNG image." RESET << std::endl;
         fclose(fp);
         return 0;
     }
