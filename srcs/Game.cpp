@@ -38,7 +38,7 @@ void				Game::gen_next() {
 	bzero(obs, sizeof(int) * 3);
 	int random = randint(5);
 	if (!random) {
-		obs[randint(3)] = 1;
+		obs[randint(3)] = randint(2) + 1;
 	}
 	Map	*next = new Map(randint(13) + 2, randint(13) + 2, obs);
 	_map.push_back(next);

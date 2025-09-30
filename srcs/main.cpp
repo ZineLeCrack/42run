@@ -145,15 +145,17 @@ static void	display() {
 	unsigned long long	score = game->get_score();
 	put_score(score, to_string(score).size());
 
+	double &d = game->get_distance();
+
 	int *obs = game->get_map()[0]->get_obs();
-	if (obs) {
+	if (obs && (d - (int)d) < 0.3) {
 		int i;
 		for (i = 0; i < 3; i++) {
 			if (obs[i]) break;
 		}
 		if (i < 3) {
 			double	pos = game->get_pos();
-			if (game->get_height() > -0.2 && (game->get_pos() == (i - 2) * 0.6)) {
+			if (game->get_height() > -0.1 && (game->get_pos() == (i - 1) * 0.6)) {
 				glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
 
 				glBegin(GL_QUADS);
@@ -184,7 +186,6 @@ static void	display() {
 		game->get_height() += (game->get_height() + 0.55) * 0.05;
 	}
 
-	double &d = game->get_distance();
 	d += 0.0625;
 
 	if (d == 1.0) {
