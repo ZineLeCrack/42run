@@ -2,7 +2,7 @@ NAME = 42run
 
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -g3 -std=c++11 -Iincludes
-GLFLAGS = -lGL -lGLU -lglut -lSOIL
+GLFLAGS = -lGL -lGLU -lglut -lpng
 
 SRCDIR = srcs
 OBJDIR = objs
