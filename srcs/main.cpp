@@ -118,6 +118,7 @@ static void	loadTextures()
 	textureIDs.push_back(loadPNGTexture("imgs/7.png"));
 	textureIDs.push_back(loadPNGTexture("imgs/8.png"));
 	textureIDs.push_back(loadPNGTexture("imgs/9.png"));
+	textureIDs.push_back(loadPNGTexture("imgs/lava.png"));
 }
 
 static void	put_score(unsigned long long n, unsigned int i) {
@@ -161,6 +162,7 @@ static void	display() {
 		game->get_pos() += 0.01;
 	}
 
+	double	pos = game->get_pos();
 	int *obs = game->get_map()[0]->get_obs();
 	if (obs && (d - (int)d) < 0.3) {
 		int i;
@@ -168,7 +170,6 @@ static void	display() {
 			if (obs[i]) break;
 		}
 		if (i < 3) {
-			double	pos = game->get_pos();
 			double	col = (i - 1) * 1.0;
 			if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
 				glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
@@ -189,6 +190,25 @@ static void	display() {
 				exit(0);
 			}
 		}
+	}
+
+	if (((game->get_map()[2]->is_lava() && d - (int)d > 0.5) || (game->get_map()[1]->is_lava() && d - (int)d < 0.5)) && game->get_height() >= 0.0) {
+		glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
+
+		glBegin(GL_QUADS);
+
+		glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.2, 0.9));
+		glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.9, 0.9));
+		glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.9, 0.9));
+		glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.2, 0.9));
+
+		glEnd();
+
+		glutSwapBuffers();
+		glutPostRedisplay();
+
+		sleep(1);
+		exit(0);
 	}
 
 	if (game->get_is_jumping()) {

@@ -27,7 +27,7 @@ glm::mat4			Game::get_MVP() { return _MVP; }
 
 void				Game::gen_start() {
 	for (unsigned char i = 0; i < 30; i++) {
-		Map	*room = new Map(randint(13) + 2, randint(13) + 2, NULL);
+		Map	*room = new Map(randint(13) + 2, randint(13) + 2, NULL, false);
 		_map.push_back(room);
 	}
 }
@@ -40,6 +40,6 @@ void				Game::gen_next() {
 	if (!random) {
 		obs[randint(3)] = randint(2) + 1;
 	}
-	Map	*next = new Map(randint(13) + 2, randint(13) + 2, obs);
+	Map	*next = new Map(randint(13) + 2, randint(13) + 2, obs, randint(12) > 0 ? false : true);
 	_map.push_back(next);
 }

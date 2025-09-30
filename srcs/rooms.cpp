@@ -1,7 +1,9 @@
 #include "Includes.hpp"
 
-void	floor(vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
-	glBindTexture(GL_TEXTURE_2D, textureIDs[FLOOR]);
+void	floor(bool lava, vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
+
+	if (lava) glBindTexture(GL_TEXTURE_2D, textureIDs[LAVA]);
+	else glBindTexture(GL_TEXTURE_2D, textureIDs[FLOOR]);
 
 	glBegin(GL_QUADS);
 
@@ -134,7 +136,7 @@ void	corridor(Game *game) {
 	double	z = distance - (int)distance;
 
 	for (int i = 0; i < 30 ; i++) {
-		floor(textureIDs, MVP, i, z);
+		floor(game->get_map()[i]->is_lava(), textureIDs, MVP, i, z);
 		celling(textureIDs, MVP, i, z);
 		wall(textureIDs, MVP, game->get_map()[i], i, z);
 	}

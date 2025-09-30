@@ -69,3 +69,4 @@ using namespace std;
 #define NB_7					26
 #define NB_8					27
 #define NB_9					28
+#define LAVA					29
