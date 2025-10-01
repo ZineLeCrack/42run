@@ -209,7 +209,7 @@ static void	display() {
 		return ;
 	}
 
-	if (keys[' '] && game->get_height() >= 0.0) {
+	if (keys[32] && game->get_height() >= 0.0) {
 		game->get_is_jumping() = true;
 	}
 
