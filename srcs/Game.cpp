@@ -40,6 +40,6 @@ void				Game::gen_next() {
 	if (!random) {
 		obs[randint(3)] = randint(2) + 1;
 	}
-	Map	*next = new Map(randint(13) + 2, randint(13) + 2, obs, randint(12) > 0 ? false : true);
+	Map	*next = new Map(randint(13) + 2, randint(13) + 2, obs, randint(12) > 0 ? 0 : randint(2) + 1);
 	_map.push_back(next);
 }

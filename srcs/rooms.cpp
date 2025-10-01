@@ -1,28 +1,60 @@
 #include "Includes.hpp"
 
-void	floor(bool lava, vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
+void	floor(int lava, vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
 
-	if (lava) glBindTexture(GL_TEXTURE_2D, textureIDs[LAVA]);
-	else glBindTexture(GL_TEXTURE_2D, textureIDs[FLOOR]);
+	if (lava < 2) {
+		glBindTexture(GL_TEXTURE_2D, textureIDs[lava == 0 ? FLOOR : LAVA]);
 
-	glBegin(GL_QUADS);
+		glBegin(GL_QUADS);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
 
-	glEnd();
+		glEnd();
+	} else {
+		glDisable(GL_TEXTURE_2D);
+		glBegin(GL_QUADS);
+
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, i + 0.0 - z));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, i + 1.0 - z));
+
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, i + 1.0 - z));
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 2.0, i + 1.0 - z));
+
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 2.0, i + 1.0 - z));
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 2.0, i + 1.0 - z));
+
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 2.0, i + 1.0 - z));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, i + 1.0 - z));
+
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, i + 0.0 - z));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, i + 1.0 - z));
+
+		glEnd();
+		glEnable(GL_TEXTURE_2D);
+	}
 }
 
 void	celling(vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
