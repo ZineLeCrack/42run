@@ -146,7 +146,7 @@ static void	display() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	corridor(game);
-	unsigned long long	score = game->get_score();
+	unsigned long long	score = game->get_score() * 0.1;
 	put_score(score, to_string(score).size());
 
 	double &d = game->get_distance();
