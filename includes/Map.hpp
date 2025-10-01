@@ -10,10 +10,11 @@ class Map
 		GLuint					_right_wall_tex;
 		int						*_obs;
 		int						_hole;
+		int						_turn;
 
 	public:
 
-		Map(GLuint left_tex, GLuint right_tex, int *obs, int hole);
+		Map(GLuint left_tex, GLuint right_tex, int *obs, int hole, int turn);
 		~Map();
 
 		GLuint	get_left_wall_tex();
