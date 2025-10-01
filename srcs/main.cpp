@@ -194,16 +194,20 @@ static void	display() {
 				glutPostRedisplay();
 
 				sleep(1);
+				cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
 				exit(0);
 			}
 		}
 	}
 
-	if (((game->get_map()[2]->is_lava() && d - (int)d > 0.5) || (game->get_map()[1]->is_lava() && d - (int)d < 0.5)) && game->get_height() >= 0.0) is_dying = true;
+	if (((game->get_map()[2]->is_hole() && d - (int)d > 0.5) || (game->get_map()[1]->is_hole() && d - (int)d < 0.5)) && game->get_height() >= 0.0) is_dying = true;
 
 	if (is_dying) {
 		game->get_height() += 0.01;
-		if (game->get_height() > 1.0) exit(0);
+		if (game->get_height() > 1.0) {
+			cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
+			exit(0);
+		}
 		glutSwapBuffers();
 		glutPostRedisplay();
 		return ;
