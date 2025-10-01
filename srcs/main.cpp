@@ -1,8 +1,9 @@
 #include "Includes.hpp"
 
 static Game *game;
-int	keys[256];
-int	specials_keys[256];
+static bool	is_dying = false;
+static int	keys[256];
+static int	specials_keys[256];
 
 GLuint loadPNGTexture(const char* filename) {
     FILE *fp = fopen(filename, "rb");
@@ -150,8 +151,14 @@ static void	display() {
 
 	double &d = game->get_distance();
 
-	if (keys[' '] && game->get_height() >= 0.0) {
-		game->get_is_jumping() = true;
+	if (game->get_is_jumping()) {
+		if (game->get_height() < -0.5)
+			game->get_is_jumping() = false;
+		else
+			game->get_height() -= (game->get_height() + 0.7) * 0.05;
+	}
+	else if (game->get_height() < 0.0) {
+		game->get_height() += (game->get_height() + 0.55) * 0.05;
 	}
 
 	if (specials_keys[GLUT_KEY_LEFT] && game->get_pos() > -0.8) {
@@ -176,10 +183,10 @@ static void	display() {
 
 				glBegin(GL_QUADS);
 
-				glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.2, 0.9));
-				glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.9, 0.9));
-				glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.9, 0.9));
-				glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.2, 0.9));
+				glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3, 1.3));
+				glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9, 1.3));
+				glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9, 1.3));
+				glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3, 1.3));
 
 				glEnd();
 
@@ -192,33 +199,18 @@ static void	display() {
 		}
 	}
 
-	if (((game->get_map()[2]->is_lava() && d - (int)d > 0.5) || (game->get_map()[1]->is_lava() && d - (int)d < 0.5)) && game->get_height() >= 0.0) {
-		glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
+	if (((game->get_map()[2]->is_lava() && d - (int)d > 0.5) || (game->get_map()[1]->is_lava() && d - (int)d < 0.5)) && game->get_height() >= 0.0) is_dying = true;
 
-		glBegin(GL_QUADS);
-
-		glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.2, 0.9));
-		glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.35 + pos, 0.9, 0.9));
-		glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.9, 0.9));
-		glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.35 + pos, 0.2, 0.9));
-
-		glEnd();
-
+	if (is_dying) {
+		game->get_height() += 0.01;
+		if (game->get_height() > 1.0) exit(0);
 		glutSwapBuffers();
 		glutPostRedisplay();
-
-		sleep(1);
-		exit(0);
+		return ;
 	}
 
-	if (game->get_is_jumping()) {
-		if (game->get_height() < -0.5)
-			game->get_is_jumping() = false;
-		else
-			game->get_height() -= (game->get_height() + 0.7) * 0.05;
-	}
-	else if (game->get_height() < 0.0) {
-		game->get_height() += (game->get_height() + 0.55) * 0.05;
+	if (keys[' '] && game->get_height() >= 0.0) {
+		game->get_is_jumping() = true;
 	}
 
 	d += 0.0625;

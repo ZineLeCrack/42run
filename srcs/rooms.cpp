@@ -77,10 +77,10 @@ void	display_player(vector<GLuint> textureIDs, glm::mat4 MVP, double player_pos,
 
 	glBegin(GL_QUADS);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.2 + player_pos, 0.4 + jumping, 1.0));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + player_pos, 0.8 + jumping, 1.0));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + player_pos, 0.8 + jumping, 1.0));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.2 + player_pos, 0.4 + jumping, 1.0));
+	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos, 0.3 + jumping, 1.5));
+	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos, 0.9 + jumping, 1.5));
+	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.4 + player_pos, 0.9 + jumping, 1.5));
+	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.4 + player_pos, 0.3 + jumping, 1.5));
 
 	glEnd();
 }
