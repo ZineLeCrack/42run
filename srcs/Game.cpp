@@ -33,7 +33,7 @@ void				Game::gen_start() {
 }
 
 void				Game::gen_next() {
-	int	turn = randint(30) > 0 ? 0 : randint(3);
+	int	turn = randint(30) > 0 ? 0 : randint(2) + 1;
 	int	*obs = new int[3];
 	int	hole = 0;
 	

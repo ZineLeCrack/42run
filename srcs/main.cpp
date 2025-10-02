@@ -1,6 +1,7 @@
 #include "Includes.hpp"
 
 static Game *game;
+static double	v = 0.0625;
 static bool	is_dying = false;
 static int	keys[256];
 static int	specials_keys[256];
@@ -170,7 +171,7 @@ static void	display() {
 	}
 
 	double	pos = game->get_pos();
-	int *obs = game->get_map()[0]->get_obs();
+	int *obs = game->get_map()[1]->get_obs();
 	if (obs && (d - (int)d) < 0.3) {
 		int i;
 		for (i = 0; i < 3; i++) {
@@ -217,9 +218,10 @@ static void	display() {
 		game->get_is_jumping() = true;
 	}
 
-	d += 0.0625;
+	d += v;
+	if (v < 0.15) v += 0.000012;
 
-	if (d == 1.0) {
+	if (d >= 1.0) {
 		d = 0;
 		game->get_map().erase(game->get_map().begin());
 		game->gen_next();

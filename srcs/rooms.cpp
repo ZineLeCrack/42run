@@ -132,10 +132,10 @@ void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, d
 
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.75, i + 1.7 - z));
-			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.9, i + 1.2 - z));
-			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.9, i + 1.2 - z));
-			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.75, i + 1.7 - z));
+			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.75, i + 0.7 - z));
+			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.9, i + 0.2 - z));
+			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.9, i + 0.2 - z));
+			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.75, i + 0.7 - z));
 			
 			
 		}
@@ -143,17 +143,17 @@ void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, d
 			glDisable(GL_TEXTURE_2D);
 			glBegin(GL_TRIANGLES);
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 1.5 - z));
-			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 1.5 - z));
-			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 1.7 - z));
+			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 0.5 - z));
+			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 0.5 - z));
+			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 0.7 - z));
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 1.7 - z));
-			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 1.5 - z));
-			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 1.7 - z));
+			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 0.7 - z));
+			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 0.5 - z));
+			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 0.7 - z));
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 1.7 - z));
-			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 1.5 - z));
-			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 1.7 - z));
+			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 0.7 - z));
+			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 0.5 - z));
+			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 0.7 - z));
 		}
 
 		glEnd();
