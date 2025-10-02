@@ -21,4 +21,5 @@ class Map
 		GLuint	get_right_wall_tex();
 		int		*get_obs();
 		int		is_hole();
+		int		is_turn();
 };

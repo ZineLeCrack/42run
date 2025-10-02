@@ -81,14 +81,35 @@ void	celling(vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
 }
 
 void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, double z) {
+	int		turn = map->is_turn();
+	double	mov = 0.0;
+
+	if (turn) {
+		glBindTexture(GL_TEXTURE_2D, textureIDs[LOGO_42_1]);
+
+		glBegin(GL_QUADS);
+
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, i + 0.0 - z));
+
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(0.5, 0.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, i + 0.0 - z));
+
+		glEnd();
+		mov++;
+	}
 	glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
 
 	glBegin(GL_QUADS);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, i + 0.0 - z));
+	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, i + 1.0 - z));
+	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, i + 1.0 - z));
+	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, i + 0.0 - z));
+	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, i + 0.0 - z));
 
 	glEnd();
 
@@ -96,10 +117,10 @@ void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, double z
 
 	glBegin(GL_QUADS);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, i + 0.0 - z));
+	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, i + 1.0 - z));
+	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, i + 1.0 - z));
+	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, i + 0.0 - z));
+	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, i + 0.0 - z));
 
 	glEnd();
 }

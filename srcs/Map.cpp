@@ -11,3 +11,5 @@ GLuint	Map::get_right_wall_tex() { return _right_wall_tex; }
 int		*Map::get_obs() { return _obs; }
 
 int		Map::is_hole() { return _hole; }
+
+int		Map::is_turn() { return _turn; }

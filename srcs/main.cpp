@@ -3,8 +3,8 @@
 static Game *game;
 static double	v = 0.0625;
 static bool	is_dying = false;
-static int	keys[256];
-static int	specials_keys[256];
+static bool	keys[256];
+static bool	specials_keys[256];
 
 GLuint loadPNGTexture(const char* filename) {
     FILE *fp = fopen(filename, "rb");
@@ -171,6 +171,29 @@ static void	display() {
 	}
 
 	double	pos = game->get_pos();
+
+	if ((game->get_map()[2]->is_turn() && (d - (int)d) > 0.5) || game->get_map()[1]->is_turn()) {
+		if (pos < -0.5 || pos > 0.5) {
+			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
+
+			glBegin(GL_QUADS);
+
+			glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3, 1.3));
+			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9, 1.3));
+			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9, 1.3));
+			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3, 1.3));
+
+			glEnd();
+
+			glutSwapBuffers();
+			glutPostRedisplay();
+
+			sleep(1);
+			cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
+			exit(0);
+		}
+	}
+
 	int *obs = game->get_map()[1]->get_obs();
 	if (obs && (d - (int)d) < 0.3) {
 		int i;
@@ -237,28 +260,28 @@ static void special_keypress(int key, int x, int y) {
 	(void)x;
 	(void)y;
 
-	specials_keys[key] = 1;
+	specials_keys[key] = true;
 }
 
 static void special_keyup(int key, int x, int y) {
 	(void)x;
 	(void)y;
 
-	specials_keys[key] = 0;
+	specials_keys[key] = false;
 }
 
 static void keypress(unsigned char key, int x, int y) {
 	(void)x;
 	(void)y;
 
-	keys[key] = 1;
+	keys[key] = true;
 }
 
 static void keyup(unsigned char key, int x, int y) {
 	(void)x;
 	(void)y;
 
-	keys[key] = 0;
+	keys[key] = false;
 }
 
 int	main(int ac, char **av) {
