@@ -172,16 +172,18 @@ static void	display() {
 
 	double	pos = game->get_pos();
 
-	if ((game->get_map()[2]->is_turn() && (d - (int)d) > 0.5) || game->get_map()[1]->is_turn()) {
+	if ((game->get_map()[2]->is_turn() && (d - (int)d) > 0.3) || (game->get_map()[1]->is_turn() && (d - (int)d) < 0.7)) {
 		if (pos < -0.5 || pos > 0.5) {
+			double h = game->get_height();
+
 			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
 
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3, 1.3));
-			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9, 1.3));
-			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9, 1.3));
-			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3, 1.3));
+			glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3 + h, 1.3));
+			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9 + h, 1.3));
+			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9 + h, 1.3));
+			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3 + h, 1.3));
 
 			glEnd();
 
@@ -203,14 +205,16 @@ static void	display() {
 		if (i < 3) {
 			double	col = (i - 1) * 1.0;
 			if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
+				double h = game->get_height();
+
 				glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
 
 				glBegin(GL_QUADS);
 
-				glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3, 1.3));
-				glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9, 1.3));
-				glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9, 1.3));
-				glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3, 1.3));
+				glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3 + h, 1.3));
+				glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9 + h, 1.3));
+				glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9 + h, 1.3));
+				glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3 + h, 1.3));
 
 				glEnd();
 
