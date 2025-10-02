@@ -251,7 +251,7 @@ static void	display() {
 	if (d >= 1.0) {
 		d = 0;
 		game->get_map().erase(game->get_map().begin());
-		game->gen_next();
+		if (game->get_map().size() <= 30) game->gen_next();
 	}
 
 	game->get_score()++;

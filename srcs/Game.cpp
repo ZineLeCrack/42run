@@ -46,6 +46,10 @@ void				Game::gen_next() {
 				obs[randint(3)] = randint(2) + 1;
 			}
 		}
+	} else {
+		for (int i = 0; i < 5; i++) {
+			_map.push_back(new Map(randint(13) + 2, randint(13) + 2, obs, hole, turn));
+		}
 	}
 
 	Map	*next = new Map(randint(13) + 2, randint(13) + 2, obs, hole, turn);
