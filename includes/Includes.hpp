@@ -14,6 +14,7 @@
 #include <glm/glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/glm/gtc/type_ptr.hpp>
 #include <png.h>
+#include <GL/freeglut.h>
 
 /*-------- CLASSES --------*/
 #include "Game.hpp"
@@ -72,3 +73,5 @@ using namespace std;
 #define LAVA					29
 #define METAL					30
 #define GALAXY					31
+
+#define KEY_ESC					27

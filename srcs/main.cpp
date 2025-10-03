@@ -1,94 +1,94 @@
 #include "Includes.hpp"
 
-static Game *game;
-static glm::mat4 View = glm::lookAt(glm::vec3(0.0, 0.2, -0.5), glm::vec3(0.0, 0.5, 5.0), glm::vec3(0.0, -1.0, 0.0));
-static glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 2560.0f / 1600.0f, 0.1f, 100.0f);
-static double	v = 0.0625;
-static bool	is_dying = false;
-static bool is_turning = false;
-static double to_turn = 0.0;
-static bool	keys[256];
-static bool	specials_keys[256];
+static Game			*game;
+static glm::mat4	View = glm::lookAt(glm::vec3(0.0, 0.2, -0.5), glm::vec3(0.0, 0.5, 5.0), glm::vec3(0.0, -1.0, 0.0));
+static glm::mat4	Projection = glm::perspective(glm::radians(45.0f), 2560.0f / 1600.0f, 0.1f, 100.0f);
+static double		v = 0.0625;
+static bool			is_dying = false;
+static bool			is_turning = false;
+static double		to_turn = 0.0;
+static bool			keys[256];
+static bool			specials_keys[256];
 
 GLuint loadPNGTexture(const char* filename) {
-    FILE *fp = fopen(filename, "rb");
-    if (!fp) {
-        std::cerr << RED "Error: cannot read file." << filename << RESET << std::endl;
-        return 0;
-    }
+	FILE *fp = fopen(filename, "rb");
+	if (!fp) {
+		std::cerr << RED "Error: cannot read file." << filename << RESET << std::endl;
+		return 0;
+	}
 
-    // Vérification signature PNG
-    png_byte header[8];
-    fread(header, 1, 8, fp);
-    if (png_sig_cmp(header, 0, 8)) {
-        std::cerr << RED "Error: " << filename << " is not a PNG image." RESET << std::endl;
-        fclose(fp);
-        return 0;
-    }
+	// Vérification signature PNG
+	png_byte header[8];
+	fread(header, 1, 8, fp);
+	if (png_sig_cmp(header, 0, 8)) {
+		std::cerr << RED "Error: " << filename << " is not a PNG image." RESET << std::endl;
+		fclose(fp);
+		return 0;
+	}
 
-    // Structures libpng
-    png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-    if (!png_ptr) { fclose(fp); return 0; }
+	// Structures libpng
+	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+	if (!png_ptr) { fclose(fp); return 0; }
 
-    png_infop info_ptr = png_create_info_struct(png_ptr);
-    if (!info_ptr) { png_destroy_read_struct(&png_ptr, NULL, NULL); fclose(fp); return 0; }
+	png_infop info_ptr = png_create_info_struct(png_ptr);
+	if (!info_ptr) { png_destroy_read_struct(&png_ptr, NULL, NULL); fclose(fp); return 0; }
 
-    if (setjmp(png_jmpbuf(png_ptr))) {
-        png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-        fclose(fp);
-        return 0;
-    }
+	if (setjmp(png_jmpbuf(png_ptr))) {
+		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+		fclose(fp);
+		return 0;
+	}
 
-    png_init_io(png_ptr, fp);
-    png_set_sig_bytes(png_ptr, 8);
+	png_init_io(png_ptr, fp);
+	png_set_sig_bytes(png_ptr, 8);
 
-    // Lecture info PNG
-    png_read_info(png_ptr, info_ptr);
+	// Lecture info PNG
+	png_read_info(png_ptr, info_ptr);
 
-    int width      = png_get_image_width(png_ptr, info_ptr);
-    int height     = png_get_image_height(png_ptr, info_ptr);
-    png_byte color = png_get_color_type(png_ptr, info_ptr);
-    png_byte depth = png_get_bit_depth(png_ptr, info_ptr);
+	int width = png_get_image_width(png_ptr, info_ptr);
+	int height = png_get_image_height(png_ptr, info_ptr);
+	png_byte color = png_get_color_type(png_ptr, info_ptr);
+	png_byte depth = png_get_bit_depth(png_ptr, info_ptr);
 
-    // Conversion en RGBA8 si nécessaire
-    if (depth == 16) png_set_strip_16(png_ptr);
-    if (color == PNG_COLOR_TYPE_PALETTE) png_set_palette_to_rgb(png_ptr);
-    if (color == PNG_COLOR_TYPE_GRAY && depth < 8) png_set_expand_gray_1_2_4_to_8(png_ptr);
-    if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_tRNS_to_alpha(png_ptr);
+	// Conversion en RGBA8 si nécessaire
+	if (depth == 16) png_set_strip_16(png_ptr);
+	if (color == PNG_COLOR_TYPE_PALETTE) png_set_palette_to_rgb(png_ptr);
+	if (color == PNG_COLOR_TYPE_GRAY && depth < 8) png_set_expand_gray_1_2_4_to_8(png_ptr);
+	if (png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS)) png_set_tRNS_to_alpha(png_ptr);
 
-    if (color == PNG_COLOR_TYPE_RGB || color == PNG_COLOR_TYPE_GRAY || color == PNG_COLOR_TYPE_PALETTE)
-        png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
+	if (color == PNG_COLOR_TYPE_RGB || color == PNG_COLOR_TYPE_GRAY || color == PNG_COLOR_TYPE_PALETTE)
+		png_set_filler(png_ptr, 0xFF, PNG_FILLER_AFTER);
 
-    if (color == PNG_COLOR_TYPE_GRAY || color == PNG_COLOR_TYPE_GRAY_ALPHA)
-        png_set_gray_to_rgb(png_ptr);
+	if (color == PNG_COLOR_TYPE_GRAY || color == PNG_COLOR_TYPE_GRAY_ALPHA)
+		png_set_gray_to_rgb(png_ptr);
 
-    png_read_update_info(png_ptr, info_ptr);
+	png_read_update_info(png_ptr, info_ptr);
 
-    // Allocation buffer
-    std::vector<png_byte> imageData(width * height * 4);
-    std::vector<png_bytep> row_pointers(height);
+	// Allocation buffer
+	std::vector<png_byte> imageData(width * height * 4);
+	std::vector<png_bytep> row_pointers(height);
 
-    for (int y = 0; y < height; y++) {
-        row_pointers[y] = imageData.data() + y * width * 4;
-    }
+	for (int y = 0; y < height; y++) {
+		row_pointers[y] = imageData.data() + y * width * 4;
+	}
 
-    // Lecture pixels
-    png_read_image(png_ptr, row_pointers.data());
-    png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
-    fclose(fp);
+	// Lecture pixels
+	png_read_image(png_ptr, row_pointers.data());
+	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
+	fclose(fp);
 
-    // Création texture OpenGL
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
+	// Création texture OpenGL
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
-                 GL_RGBA, GL_UNSIGNED_BYTE, imageData.data());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0,
+				 GL_RGBA, GL_UNSIGNED_BYTE, imageData.data());
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    return textureID;
+	return textureID;
 }
 
 static void	loadTextures()
@@ -161,7 +161,9 @@ static void	display() {
 		to_turn += 0.01;
 		if (to_turn > 1.5) {
 			is_turning = false;
-			game->get_map().erase(++++(game->get_map().begin()));
+			vector<Map*>::iterator tmp = ++++(game->get_map().begin());
+			delete (*tmp);
+			game->get_map().erase(tmp);
 			game->gen_next();
 		}
 	}
@@ -179,13 +181,18 @@ static void	display() {
 	double &d = game->get_distance();
 
 	if (game->get_is_jumping()) {
-		if (game->get_height() < -0.5)
+		if (game->get_height() < -0.4)
 			game->get_is_jumping() = false;
 		else
 			game->get_height() -= (game->get_height() + 0.7) * 0.05;
 	}
 	else if (game->get_height() < 0.0) {
 		game->get_height() += (game->get_height() + 0.55) * 0.05;
+	}
+
+	if (keys[KEY_ESC]) {
+		cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
+		glutLeaveMainLoop();
 	}
 
 	if (specials_keys[GLUT_KEY_LEFT] && game->get_pos() > -0.8) {
@@ -218,7 +225,7 @@ static void	display() {
 
 			sleep(1);
 			cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
-			exit(0);
+			glutLeaveMainLoop();
 		}
 	}
 
@@ -246,7 +253,7 @@ static void	display() {
 
 				sleep(1);
 				cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
-				exit(0);
+				glutLeaveMainLoop();
 			}
 		}
 	}
@@ -257,7 +264,7 @@ static void	display() {
 		game->get_height() += 0.01;
 		if (game->get_height() > 1.0) {
 			cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
-			exit(0);
+			glutLeaveMainLoop();
 		}
 		glutSwapBuffers();
 		glutPostRedisplay();
@@ -274,6 +281,7 @@ static void	display() {
 
 	if (d >= 1.0) {
 		d = 0;
+		delete *(game->get_map().begin());
 		game->get_map().erase(game->get_map().begin());
 		if (game->get_map().size() <= 30) game->gen_next();
 	}
@@ -324,6 +332,7 @@ int	main(int ac, char **av) {
 	glutInitWindowSize(2560, 1600);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow("42run");
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);

@@ -18,7 +18,7 @@ void	floor(vector<Map*> map, vector<GLuint> textureIDs, glm::mat4 MVP, int index
 			glTexCoord2d((hole == 1 ? (index_z % 4 < 2) : 1.0), (hole == 1 ? (index_z % 4 == 0 || index_z % 4 == 3) : 1.0)); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d((hole == 1 ? (index_z % 4 == 0 || index_z % 4 == 3) : 0.0), (hole == 1 ? (index_z % 4 > 1) : 1.0)); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 0.0 - gap));
 			glTexCoord2d((hole == 1 ? (index_z % 4 > 1) : 0.0), (hole == 1 ? (index_z % 4 == 1 || index_z % 4 == 2) : 0.0)); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 0.0 - gap));
-	
+
 			glTexCoord2d((hole == 1 ? (index_z % 4 == 1 || index_z % 4 == 2) : 1.0), (hole == 1 ? (index_z % 4 < 2) : 0.0)); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d((hole == 1 ? (index_z % 4 < 2) : 1.0), (hole == 1 ? (index_z % 4 == 0 || index_z % 4 == 3) : 1.0)); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d((hole == 1 ? (index_z % 4 == 0 || index_z % 4 == 3) : 0.0), (hole == 1 ? (index_z % 4 > 1) : 1.0)); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 0.0 - gap));
@@ -50,12 +50,12 @@ void	floor(vector<Map*> map, vector<GLuint> textureIDs, glm::mat4 MVP, int index
 			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 2.0, index_z + 1.0 - gap));
 			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 2.0, index_z + 1.0 - gap));
-			
+
 			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 2.0, index_z + 1.0 - gap));
 			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 2.0, index_z + 1.0 - gap));
-			
+
 			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 2.0, index_z + 1.0 - gap));
@@ -90,7 +90,7 @@ void	celling(int turn, vector<GLuint> textureIDs, glm::mat4 MVP, int index_z, do
 		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 1.0 - gap));
 		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 0.0 - gap));
 		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, index_z + 0.0 - gap));
-	
+
 		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, index_z + 1.0 - gap));
 		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 1.0 - gap));
 		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 0.0 - gap));
@@ -185,7 +185,7 @@ void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, int index_z, doubl
 		glEnd();
 
 		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_right_wall_tex()]);
-	
+
 		glBegin(GL_QUADS);
 
 		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, index_z + 1.0 - gap));
@@ -226,7 +226,7 @@ void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double inde
 			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.9, index_z + 0.2 - gap));
 			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.9, index_z + 0.2 - gap));
 			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.75, index_z + 0.7 - gap));
-			
+
 			glEnd();
 		}
 		else if (obs[j] == 2) {
