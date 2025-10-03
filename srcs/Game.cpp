@@ -25,6 +25,8 @@ double				&Game::get_height() { return _height; }
 
 glm::mat4			Game::get_MVP() { return _MVP; }
 
+void				Game::set_MVP(const glm::mat4 MVP) { _MVP = MVP; };
+
 void				Game::gen_start() {
 	for (unsigned char i = 0; i < 30; i++) {
 		Map	*room = new Map(randint(13) + 2, randint(13) + 2, NULL, false, 0);
@@ -33,7 +35,7 @@ void				Game::gen_start() {
 }
 
 void				Game::gen_next() {
-	int	turn = randint(30) > 0 ? 0 : randint(2) + 1;
+	int	turn = randint(60) > 0 ? 0 : 1;
 	int	*obs = new int[3];
 	int	hole = 0;
 	
@@ -41,14 +43,13 @@ void				Game::gen_next() {
 	if (!turn) {
 		hole = randint(12) > 0 ? 0 : randint(2) + 1;
 		if (!hole) {
-			int random = randint(5);
-			if (!random) {
-				obs[randint(3)] = randint(2) + 1;
-			}
+			if (!randint(8)) obs[0] = randint(2) + 1;
+			if (!randint(8)) obs[1] = randint(2) + 1;
+			if (!randint(8)) obs[2] = randint(2) + 1;
 		}
 	} else {
 		for (int i = 0; i < 5; i++) {
-			_map.push_back(new Map(randint(13) + 2, randint(13) + 2, obs, hole, turn));
+			_map.push_back(new Map(randint(13) + 2, randint(13) + 2, obs, hole, i == 2 ? randint(2) + 2 : turn));
 		}
 	}
 

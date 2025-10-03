@@ -1,86 +1,90 @@
 #include "Includes.hpp"
 
-void	floor(int hole, vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
+void	floor(Map *map, vector<GLuint> textureIDs, glm::mat4 MVP, double index_z, double gap) {
 
+	int	hole = map->is_hole();
 	if (hole < 2) {
 		glBindTexture(GL_TEXTURE_2D, textureIDs[hole == 0 ? FLOOR : LAVA]);
 
 		glBegin(GL_QUADS);
 
-		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
-		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
-		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
-		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 0.0 - gap));
 
-		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
-		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
-		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
-		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
-
-		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
-		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
-		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
-		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
+		if (map->is_turn() != 1) {
+			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
+			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 1.0 - gap));
+			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 0.0 - gap));
+			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 0.0 - gap));
+	
+			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 1.0 - gap));
+			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
+			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 0.0 - gap));
+			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 0.0 - gap));
+		}
 
 		glEnd();
 	} else {
 		glDisable(GL_TEXTURE_2D);
 		glBegin(GL_QUADS);
 
-		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
-		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
-		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, i + 0.0 - z));
-		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, i + 1.0 - z));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 0.0 - gap));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, index_z + 0.0 - gap));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, index_z + 1.0 - gap));
 
-		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
-		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 1.0 - z));
-		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, i + 1.0 - z));
-		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 2.0, i + 1.0 - z));
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-1.5, 2.0, index_z + 1.0 - gap));
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 2.0, index_z + 1.0 - gap));
 
-		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 1.0 - z));
-		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
-		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 2.0, i + 1.0 - z));
-		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 2.0, i + 1.0 - z));
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 2.0, index_z + 1.0 - gap));
+		glColor3d(0.7, 0.7, 0.7); applyMVP(MVP, glm::vec3(-0.5, 2.0, index_z + 1.0 - gap));
 
-		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
-		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 1.0 - z));
-		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 2.0, i + 1.0 - z));
-		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, i + 1.0 - z));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.6, 0.6, 0.6); applyMVP(MVP, glm::vec3(0.5, 2.0, index_z + 1.0 - gap));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, index_z + 1.0 - gap));
 
-		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 1.0 - z));
-		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
-		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, i + 0.0 - z));
-		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, i + 1.0 - z));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 1.0 - gap));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 0.0 - gap));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, index_z + 0.0 - gap));
+		glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(1.5, 2.0, index_z + 1.0 - gap));
 
 		glEnd();
 		glEnable(GL_TEXTURE_2D);
 	}
 }
 
-void	celling(vector<GLuint> textureIDs, glm::mat4 MVP, double i, double z) {
+void	celling(int turn, vector<GLuint> textureIDs, glm::mat4 MVP, double index_z, double gap) {
 	glBindTexture(GL_TEXTURE_2D, textureIDs[CELLING]);
-
 	glBegin(GL_QUADS);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, i + 0.0 - z));
+	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 1.0 - gap));
+	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 1.0 - gap));
+	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 0.0 - gap));
+	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 0.0 - gap));
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, i + 0.0 - z));
-
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, i + 0.0 - z));
+	if (turn != 1) {
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, index_z + 0.0 - gap));
+	
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, index_z + 0.0 - gap));
+	}
 
 	glEnd();
 }
 
-void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, double z) {
+void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double index_z, double gap) {
 	int		turn = map->is_turn();
 	double	mov = 0.0;
 
@@ -89,63 +93,112 @@ void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, double z
 
 		glBegin(GL_QUADS);
 
-		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, i + 0.0 - z));
-		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, i + 0.0 - z));
-		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, i + 0.0 - z));
-		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, index_z + 0.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 0.0 - gap));
 
-		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(0.5, 0.0, i + 0.0 - z));
-		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, i + 0.0 - z));
-		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5, 1.0, i + 0.0 - z));
-		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, i + 0.0 - z));
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 0.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5, 0.0, index_z + 0.0 - gap));
 
 		glEnd();
 		mov++;
 	}
-	glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
 
-	glBegin(GL_QUADS);
+	if (turn == 2) {
+		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, i + 0.0 - z));
+		glBegin(GL_QUADS);
 
-	glEnd();
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 1.0 - gap));
 
-	glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_right_wall_tex()]);
+		glEnd();
 
-	glBegin(GL_QUADS);
+		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_right_wall_tex()]);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, i + 1.0 - z));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, i + 1.0 - z));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, i + 0.0 - z));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, i + 0.0 - z));
+		glBegin(GL_QUADS);
 
-	glEnd();
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, index_z + 0.0 - gap));
+
+		glEnd();
+	}
+
+	else if (turn == 3) {
+		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
+
+		glBegin(GL_QUADS);
+
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, index_z + 0.0 - gap));
+
+		glEnd();
+
+		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_right_wall_tex()]);
+
+		glBegin(GL_QUADS);
+
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 1.0 - gap));
+
+		glEnd();
+	}
+
+	else {
+
+		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
+
+		glBegin(GL_QUADS);
+
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-1.5 + mov, 0.0, index_z + 0.0 - gap));
+
+		glEnd();
+
+		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_right_wall_tex()]);
+	
+		glBegin(GL_QUADS);
+
+		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, index_z + 1.0 - gap));
+		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, index_z + 1.0 - gap));
+		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(1.5 - mov, 1.0, index_z + 0.0 - gap));
+		glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(1.5 - mov, 0.0, index_z + 0.0 - gap));
+
+		glEnd();
+	}
 }
 
-void	display_player(vector<GLuint> textureIDs, glm::mat4 MVP, double player_pos, double jumping) {
+void	display_player(vector<GLuint> textureIDs, glm::mat4 MVP, double player_pos, double jumping, bool is_turning, double to_turn) {
 	glBindTexture(GL_TEXTURE_2D, textureIDs[NPC_1]);
 
 	glBegin(GL_QUADS);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos, 0.3 + jumping, 1.5));
-	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos, 0.9 + jumping, 1.5));
-	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.4 + player_pos, 0.9 + jumping, 1.5));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.4 + player_pos, 0.3 + jumping, 1.5));
+	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.3 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
+	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.9 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
+	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.9 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
+	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.3 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
 
 	glEnd();
 }
 
-void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, double z) {
+void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double index_z, double gap) {
 	int	*obs = map->get_obs();
 	if (!obs) return ;
-	int	j;
-	for (j = 0; j < 3; j++) {
-		if (obs[j]) break;
-	}
-	if (j < 3) {
+
+	for (int j = 0; j < 3; j++) {
 		double	pos = (j - 1) * 0.8;
 
 		if (obs[j] == 1) {
@@ -153,50 +206,50 @@ void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double i, d
 
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.75, i + 0.7 - z));
-			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.9, i + 0.2 - z));
-			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.9, i + 0.2 - z));
-			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.75, i + 0.7 - z));
+			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.75, index_z + 0.7 - gap));
+			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.9, index_z + 0.2 - gap));
+			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.9, index_z + 0.2 - gap));
+			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.75, index_z + 0.7 - gap));
 			
-			
+			glEnd();
 		}
 		else if (obs[j] == 2) {
 			glDisable(GL_TEXTURE_2D);
 			glBegin(GL_TRIANGLES);
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 0.5 - z));
-			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 0.5 - z));
-			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 0.7 - z));
+			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 0.7 - z));
-			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, i + 0.5 - z));
-			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 0.7 - z));
+			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, index_z + 0.7 - gap));
+			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 0.7 - z));
-			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, i + 0.5 - z));
-			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, i + 0.7 - z));
+			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, index_z + 0.7 - gap));
+			glColor3d(0.5, 0.5, 0.5); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glColor3d(0.3, 0.3, 0.3); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
+
+			glEnd();
+			glEnable(GL_TEXTURE_2D);
 		}
-
-		glEnd();
-		glEnable(GL_TEXTURE_2D);
 	}
 }
 
-void	corridor(Game *game) {
+void	corridor(Game *game, bool is_turning, double to_turn) {
 	vector<GLuint>	textureIDs = game->get_textureIDs();
 	glm::mat4 MVP = game->get_MVP();
 	double	distance = game->get_distance();
-	double	z = distance - (int)distance;
+	double	gap = distance - (int)distance;
 
 	for (int i = 0; i < 30 ; i++) {
-		floor(game->get_map()[i]->is_hole(), textureIDs, MVP, i, z);
-		celling(textureIDs, MVP, i, z);
-		wall(textureIDs, MVP, game->get_map()[i], i, z);
+		floor(game->get_map()[i], textureIDs, MVP, i, gap);
+		celling(game->get_map()[i]->is_turn(), textureIDs, MVP, i, gap);
+		wall(textureIDs, MVP, game->get_map()[i], i, gap);
 	}
 
 	for (int i = 29; i >= 0 ; i--) {
-		display_obs(textureIDs, MVP, game->get_map()[i], i, z);
+		display_obs(textureIDs, MVP, game->get_map()[i], i, gap);
 	}
 
-	display_player(textureIDs, MVP, game->get_pos(), game->get_height());
+	display_player(textureIDs, MVP, game->get_pos(), game->get_height(), is_turning, to_turn);
 }

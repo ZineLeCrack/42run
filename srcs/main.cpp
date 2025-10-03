@@ -1,8 +1,12 @@
 #include "Includes.hpp"
 
 static Game *game;
+static glm::mat4 View = glm::lookAt(glm::vec3(0.0, 0.2, -0.5), glm::vec3(0.0, 0.5, 5.0), glm::vec3(0.0, -1.0, 0.0));
+static glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 2560.0f / 1600.0f, 0.1f, 100.0f);
 static double	v = 0.0625;
 static bool	is_dying = false;
+static bool is_turning = false;
+static double to_turn = 0.0;
 static bool	keys[256];
 static bool	specials_keys[256];
 
@@ -146,9 +150,29 @@ static void	display() {
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	corridor(game);
+	if (game->get_map()[2]->is_turn() > 1 && !is_turning && to_turn > 2.0) {
+		to_turn = 0.0;
+		is_turning = true;
+	}
+
+	if (is_turning) {
+		to_turn += 0.01;
+		if (to_turn > 1.5) {
+			is_turning = false;
+			game->get_map().erase(++++(game->get_map().begin()));
+			game->gen_next();
+		}
+	}
+
+	corridor(game, is_turning, game->get_map()[2]->is_turn() == 2 ? -to_turn : to_turn);
 	unsigned long long	score = game->get_score() * 0.1;
 	put_score(score, to_string(score).size());
+
+	if (is_turning) {
+		glutSwapBuffers();
+		glutPostRedisplay();
+		return ;
+	}
 
 	double &d = game->get_distance();
 
@@ -198,11 +222,8 @@ static void	display() {
 
 	int *obs = game->get_map()[1]->get_obs();
 	if (obs && (d - (int)d) < 0.3) {
-		int i;
-		for (i = 0; i < 3; i++) {
-			if (obs[i]) break;
-		}
-		if (i < 3) {
+		for (int i = 0; i < 3; i++) {
+			if (!obs[i]) continue;
 			double	col = (i - 1) * 1.0;
 			if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
 				double h = game->get_height();
@@ -247,6 +268,7 @@ static void	display() {
 
 	d += v;
 	if (v < 0.15) v += 0.000012;
+	if (to_turn <= 2.0) to_turn += v;
 
 	if (d >= 1.0) {
 		d = 0;
@@ -289,9 +311,6 @@ static void keyup(unsigned char key, int x, int y) {
 }
 
 int	main(int ac, char **av) {
-	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 2560.0f / 1600.0f, 0.1f, 100.0f);
-	glm::mat4 View = glm::lookAt(glm::vec3(0.0, 0.2, -0.5), glm::vec3(0.0, 0.5, 5.0), glm::vec3(0.0, -1.0, 0.0));
-
 	bzero(keys, 1024);
 	bzero(specials_keys, 1024);
 

@@ -15,7 +15,7 @@ class Game
 		double				_player_pos;
 		bool				_is_jumping;
 		double				_height;
-		const glm::mat4	_MVP;
+		glm::mat4			_MVP;
 
 	public:
 
@@ -30,6 +30,8 @@ class Game
 		bool				&get_is_jumping();
 		double				&get_height();
 		glm::mat4			get_MVP();
+
+		void				set_MVP(const glm::mat4 MVP);
 
 		void			gen_start();
 		void			gen_next();
