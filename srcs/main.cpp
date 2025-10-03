@@ -125,6 +125,8 @@ static void	loadTextures()
 	textureIDs.push_back(loadPNGTexture("imgs/8.png"));
 	textureIDs.push_back(loadPNGTexture("imgs/9.png"));
 	textureIDs.push_back(loadPNGTexture("imgs/lava.png"));
+	textureIDs.push_back(loadPNGTexture("imgs/metal.png"));
+	textureIDs.push_back(loadPNGTexture("imgs/galaxy.png"));
 }
 
 static void	put_score(unsigned long long n, unsigned int i) {

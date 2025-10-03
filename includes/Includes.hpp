@@ -70,3 +70,5 @@ using namespace std;
 #define NB_8					27
 #define NB_9					28
 #define LAVA					29
+#define METAL					30
+#define GALAXY					31
