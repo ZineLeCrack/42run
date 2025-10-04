@@ -50,10 +50,8 @@ void				Game::gen_next() {
 	} else {
 		for (int i = 0; i < 5; i++) {
 			_map.push_back(new Map(randint(13) + 2, randint(13) + 2, obs, hole, i == 2 ? randint(2) + 2 : turn));
-			if (i < 4) {
-				obs = new int[3];
-				bzero(obs, sizeof(int) * 3);
-			}
+			obs = new int[3];
+			bzero(obs, sizeof(int) * 3);
 		}
 	}
 

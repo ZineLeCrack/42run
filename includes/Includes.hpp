@@ -4,17 +4,19 @@
 /*-------- INCLUDES -------*/
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <cstring>
 #include <vector>
 #include <unistd.h>
 #include <sys/time.h>
-#include <GL/glut.h>
+#include <GL/glew.h>
 #include <GL/gl.h>
+#include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <glm/glm/glm/glm.hpp>
 #include <glm/glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/glm/gtc/type_ptr.hpp>
 #include <png.h>
-#include <GL/freeglut.h>
 
 /*-------- CLASSES --------*/
 #include "Game.hpp"
