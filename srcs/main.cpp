@@ -152,6 +152,12 @@ static void	put_score(unsigned long long n, unsigned int i) {
 	}
 }
 
+static void	end() {
+	sleep(1);
+	cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
+	glutLeaveMainLoop();
+}
+
 static void	display() {
 	long long	fps = get_timestamp() + 16666;
 	glClearColor(0, 0, 0, 1);
@@ -196,8 +202,7 @@ static void	display() {
 	}
 
 	if (keys[KEY_ESC]) {
-		cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
-		glutLeaveMainLoop();
+		end();
 	}
 
 	if (specials_keys[GLUT_KEY_LEFT] && game->get_pos() > -0.8) {
@@ -227,10 +232,7 @@ static void	display() {
 
 			glutSwapBuffers();
 			glutPostRedisplay();
-
-			sleep(1);
-			cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
-			glutLeaveMainLoop();
+			end();
 		}
 	}
 
@@ -255,10 +257,7 @@ static void	display() {
 
 				glutSwapBuffers();
 				glutPostRedisplay();
-
-				sleep(1);
-				cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
-				glutLeaveMainLoop();
+				end();
 			}
 		}
 	}
@@ -268,8 +267,7 @@ static void	display() {
 	if (is_dying) {
 		game->get_height() += 0.01;
 		if (game->get_height() > 1.0) {
-			cout << BLUE << "Game Over !\nYou Earned " << (int)(game->get_score() * 0.1) << " points !" << endl;
-			glutLeaveMainLoop();
+			end();
 		}
 		glutSwapBuffers();
 		glutPostRedisplay();
@@ -326,34 +324,112 @@ static void keyup(unsigned char key, int x, int y) {
 	keys[key] = false;
 }
 
+static void	set_logs() {
+	int	score = (int)(game->get_score() * 0.1);
+
+	string	nickname;
+	cout << YELLOW << "Enter your nickname: " RESET << endl;
+	getline(cin, nickname);
+
+	stringstream	lasts_scores_buff;
+	ifstream		lasts_scores_infile("logs/lasts_scores.logs");
+
+	lasts_scores_buff << lasts_scores_infile.rdbuf();
+
+	ofstream		lasts_scores_outfile("logs/lasts_scores.logs");
+
+	lasts_scores_outfile << nickname << ": " << score << " pts\n" << lasts_scores_buff.str();
+
+	ifstream		bests_scores_infile("logs/bests_scores.logs");
+	string			bests_scores_buff;
+	string			all_bests_scores_buff;
+	int				best_score, i = 0;
+
+	while (i < 10) {
+		getline(bests_scores_infile, bests_scores_buff);
+		if (bests_scores_buff.size() > 0) all_bests_scores_buff.append(bests_scores_buff + '\n');
+		best_score = atoi((bests_scores_buff.substr(bests_scores_buff.find_last_of(':') + 1)).c_str());
+		cout << all_bests_scores_buff << endl;
+		if (score > best_score) {
+			all_bests_scores_buff.append(nickname + ": " + to_string(score) + " pts\n");
+			cout << all_bests_scores_buff << endl;
+			for ( ; i < 9; i++) {
+				getline(bests_scores_infile, bests_scores_buff);
+				if (bests_scores_buff.size() == 0) break ;
+				all_bests_scores_buff.append(bests_scores_buff + '\n');
+			}
+			cout << all_bests_scores_buff << endl;
+
+			ofstream	bests_scores_outfile("logs/bests_scores.logs");
+
+			bests_scores_outfile << all_bests_scores_buff;
+			bests_scores_outfile.close();
+			break ;
+		}
+		i++;
+	}
+
+	lasts_scores_infile.close();
+	lasts_scores_outfile.close();
+	bests_scores_infile.close();
+}
+
 int	main(int ac, char **av) {
-	bzero(keys, 1024);
-	bzero(specials_keys, 1024);
+	if (ac > 2) {
+		cerr << RED "usage: ./42run (logs)" RESET << endl;
+	} else if (ac == 2) {
+		if (!string("logs").compare(av[1])) {
+			ifstream	bests_scores_infile("logs/bests_scores.logs");
+			string	scores_buff;
 
-	game = new Game(Projection * View);
-	game->gen_start();
+			cout << YELLOW "-----===== BESTS SCORES =====-----" MAGENTA << endl;
 
-	glutInit(&ac, av);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glutInitWindowSize(2560, 1600);
-	glutInitWindowPosition(0, 0);
-	glutCreateWindow("42run");
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			for (int i = 0; i < 10 && getline(bests_scores_infile, scores_buff); i++) {
+				cout << i + 1 << ". " << scores_buff << endl;
+			}
 
-	loadTextures();
-	loadObjects();
+			ifstream	lasts_scores_infile("logs/lasts_scores.logs");
+			
+			cout << RESET << endl;
+			cout << YELLOW "-----===== LASTS SCORES =====-----" BLUE << endl;
 
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	glutKeyboardFunc(keypress);
-	glutSpecialFunc(special_keypress);
-	glutKeyboardUpFunc(keyup);
-	glutSpecialUpFunc(special_keyup);
-	glutDisplayFunc(display);
-	glutMainLoop();
-
-	delete game;
+			for (int i = 0; i < 10 && getline(lasts_scores_infile, scores_buff); i++) {
+				cout << i + 1 << ". " << scores_buff << endl;
+			}
+			cout << RESET;
+		} else {
+			cerr << RED "usage: ./42run (logs)" RESET << endl;
+		}
+	} else {
+		bzero(keys, 1024);
+		bzero(specials_keys, 1024);
+	
+		game = new Game(Projection * View);
+		game->gen_start();
+	
+		glutInit(&ac, av);
+		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+		glutInitWindowSize(2560, 1600);
+		glutInitWindowPosition(0, 0);
+		glutCreateWindow("42run");
+		glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+		loadTextures();
+		loadObjects();
+	
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+		glutKeyboardFunc(keypress);
+		glutSpecialFunc(special_keypress);
+		glutKeyboardUpFunc(keyup);
+		glutSpecialUpFunc(special_keyup);
+		glutDisplayFunc(display);
+		glutMainLoop();
+	
+		set_logs();
+		delete game;
+	}
 }
