@@ -129,6 +129,10 @@ static void	loadTextures()
 	textureIDs.push_back(loadPNGTexture("imgs/galaxy.png"));
 }
 
+static void	loadObjects() {
+	game->get_objects().push_back(new Object("objects/table.obj"));
+}
+
 static void	put_score(unsigned long long n, unsigned int i) {
 	if (n < 10) {
 		double	val = (double)i;
@@ -149,6 +153,7 @@ static void	put_score(unsigned long long n, unsigned int i) {
 }
 
 static void	display() {
+	long long	fps = get_timestamp() + 16666;
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -288,6 +293,7 @@ static void	display() {
 
 	game->get_score()++;
 
+	wait(fps);
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
@@ -339,6 +345,7 @@ int	main(int ac, char **av) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	loadTextures();
+	loadObjects();
 
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 	glutKeyboardFunc(keypress);

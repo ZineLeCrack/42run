@@ -1,5 +1,6 @@
 #include "Game.hpp"
 #include "Map.hpp"
+#include "Object.hpp"
 
 Game::Game(glm::mat4 MVP): _score(0), _distance(0.0), _player_pos(0.0), _is_jumping(false), _height(0.0), _MVP(MVP) {}
 
@@ -12,6 +13,8 @@ Game::~Game() {
 vector<GLuint>		&Game::get_textureIDs() { return _textureIDs; }
 
 vector<Map *>		&Game::get_map() { return _map; }
+
+vector<Object *>	&Game::get_objects() { return _objects; }
 
 unsigned long long	&Game::get_score() { return _score; }
 
@@ -43,9 +46,9 @@ void				Game::gen_next() {
 	if (!turn) {
 		hole = randint(12) > 0 ? 0 : randint(2) + 1;
 		if (!hole) {
-			if (!randint(8)) obs[0] = randint(2) + 1;
-			if (!randint(8)) obs[1] = randint(2) + 1;
-			if (!randint(8)) obs[2] = randint(2) + 1;
+			if (!randint(8)) obs[0] = randint(3) + 1;
+			if (!randint(8)) obs[1] = randint(3) + 1;
+			if (!randint(8)) obs[2] = randint(3) + 1;
 		}
 	} else {
 		for (int i = 0; i < 5; i++) {

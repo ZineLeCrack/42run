@@ -12,3 +12,14 @@ int	randint(int x) {
 	srand(tp.tv_usec);
 	return rand() % x;
 }
+
+long long	get_timestamp() {
+	timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return  (tv.tv_sec * 1000000 + tv.tv_usec);
+}
+
+void	wait(long long time) {
+	while (get_timestamp() < time);
+}

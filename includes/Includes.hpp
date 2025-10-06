@@ -21,14 +21,18 @@
 /*-------- CLASSES --------*/
 #include "Game.hpp"
 #include "Map.hpp"
+#include "Object.hpp"
 
 class Game;
 class Map;
+class Object;
 
 /*------- FUNCTIONS ------ */
-void	corridor(Game *game, bool is_turning, double to_turn);
-void	applyMVP(const glm::mat4 &MVP, const glm::vec3 &v);
-int		randint(int x);
+void		corridor(Game *game, bool is_turning, double to_turn);
+void		applyMVP(const glm::mat4 &MVP, const glm::vec3 &v);
+int			randint(int x);
+long long	get_timestamp();
+void		wait(long long time);
 
 /*----- DEFINE COLORS -----*/
 #define RESET	"\033[0m"

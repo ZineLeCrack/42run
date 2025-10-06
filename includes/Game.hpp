@@ -3,6 +3,7 @@
 #include "Includes.hpp"
 
 class Map;
+class Object;
 
 class Game
 {
@@ -10,6 +11,7 @@ class Game
 
 		vector<GLuint>		_textureIDs;
 		vector<Map *>		_map;
+		vector<Object *>	_objects;
 		unsigned long long	_score;
 		double				_distance;
 		double				_player_pos;
@@ -24,6 +26,7 @@ class Game
 
 		vector<GLuint>		&get_textureIDs();
 		vector<Map *>		&get_map();
+		vector<Object *>	&get_objects();
 		unsigned long long	&get_score();
 		double				&get_distance();
 		double				&get_pos();

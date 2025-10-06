@@ -210,7 +210,7 @@ void	display_player(vector<GLuint> textureIDs, glm::mat4 MVP, double player_pos,
 	glEnd();
 }
 
-void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double index_z, double gap) {
+void	display_obs(Game *game, Map *map, double index_z, double gap) {
 	int	*obs = map->get_obs();
 	if (!obs) return ;
 
@@ -218,34 +218,36 @@ void	display_obs(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, double inde
 		double	pos = (j - 1) * 0.8;
 
 		if (obs[j] == 1) {
-			glBindTexture(GL_TEXTURE_2D, textureIDs[VAL]);
+			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[VAL]);
 
 			glBegin(GL_QUADS);
 
-			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.75, index_z + 0.7 - gap));
-			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 0.9, index_z + 0.2 - gap));
-			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.9, index_z + 0.2 - gap));
-			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.2 + pos, 0.75, index_z + 0.7 - gap));
+			glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.2 + pos, 0.75, index_z + 0.7 - gap));
+			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.2 + pos, 0.9, index_z + 0.2 - gap));
+			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.2 + pos, 0.9, index_z + 0.2 - gap));
+			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.2 + pos, 0.75, index_z + 0.7 - gap));
 
 			glEnd();
 		}
 		else if (obs[j] == 2) {
-			glBindTexture(GL_TEXTURE_2D, textureIDs[METAL]);
+			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[METAL]);
 			glBegin(GL_TRIANGLES);
 
-			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, index_z + 0.5 - gap));
-			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, index_z + 0.5 - gap));
-			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
+			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
 
-			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, index_z + 0.7 - gap));
-			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.2 + pos, 1.0, index_z + 0.5 - gap));
-			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
+			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.2 + pos, 1.0, index_z + 0.7 - gap));
+			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
 
-			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, index_z + 0.7 - gap));
-			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.2 + pos, 1.0, index_z + 0.5 - gap));
-			glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
+			glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.2 + pos, 1.0, index_z + 0.7 - gap));
+			glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.2 + pos, 1.0, index_z + 0.5 - gap));
+			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
 
 			glEnd();
+		} else if (obs[j] == 3) {
+			game->get_objects()[0]->put_obj(index_z, pos, gap, game->get_MVP());
 		}
 	}
 }
@@ -263,7 +265,7 @@ void	corridor(Game *game, bool is_turning, double to_turn) {
 	}
 
 	for (int i = 29; i >= 0 ; i--) {
-		display_obs(textureIDs, MVP, game->get_map()[i], i, gap);
+		display_obs(game, game->get_map()[i], i, gap);
 	}
 
 	display_player(textureIDs, MVP, game->get_pos(), game->get_height(), is_turning, to_turn);
