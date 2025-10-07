@@ -48,9 +48,9 @@ void				Game::gen_next() {
 	if (!turn) {
 		hole = randint(12) > 0 ? 0 : randint(2) + 1;
 		if (!hole) {
-			if (!randint(8)) obs[0] = randint(3) + 1;
-			if (!randint(8)) obs[1] = randint(3) + 1;
-			if (!randint(8)) obs[2] = randint(3) + 1;
+			if (!randint(8)) obs[0] = randint(4) + 1;
+			if (!randint(8)) obs[1] = randint(4) + 1;
+			if (!randint(8)) obs[2] = randint(4) + 1;
 		}
 	} else {
 		for (int i = 0; i < 5; i++) {

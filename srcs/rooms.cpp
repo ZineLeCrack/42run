@@ -249,6 +249,8 @@ void	display_obs(Game *game, Map *map, double index_z, double gap) {
 			glEnd();
 		} else if (obs[j] == 3) {
 			game->get_objects()[0]->put_obj(game->get_textureIDs(), index_z, pos, gap, game->get_MVP());
+		} else if (obs[j] == 4) {
+			game->get_objects()[1]->put_obj(game->get_textureIDs(), index_z, pos, gap, game->get_MVP());
 		}
 	}
 }

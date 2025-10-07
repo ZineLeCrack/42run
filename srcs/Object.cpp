@@ -1,6 +1,6 @@
 #include "Object.hpp"
 
-Object::Object(const char *filename) {
+Object::Object(const char *filename, GLuint tex): _tex(tex) {
 	ifstream file(filename);
 
 	if (file.fail()) {
@@ -22,7 +22,7 @@ void	Object::put_obj(vector<GLuint> textureIDs, double index_z, double pos, doub
 	for (vector<string>::iterator it = _faces.begin(); it != _faces.end(); it++) {
 		string	num = (*it).substr(1);
 		i = 0;
-		glBindTexture(GL_TEXTURE_2D, textureIDs[FLOOR]);
+		glBindTexture(GL_TEXTURE_2D, textureIDs[_tex]);
 		glBegin(GL_POLYGON);
 		while (num.find_first_not_of(' ') != string::npos) {
 			unsigned int	n = atoi(num.c_str()) - 1;

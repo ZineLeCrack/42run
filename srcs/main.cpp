@@ -11,8 +11,8 @@ static bool			keys[256];
 static bool			specials_keys[256];
 
 static void	loadObjects() {
-	game->get_objects().push_back(new Object("objects/table.obj"));
-	game->get_objects().push_back(new Object("objects/coin.obj"));
+	game->get_objects().push_back(new Object("objects/table.obj", FLOOR));
+	game->get_objects().push_back(new Object("objects/coin.obj", GALAXY));
 }
 
 static void	put_score(unsigned long long n, unsigned int i) {
@@ -132,9 +132,14 @@ static void	display() {
 				if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
 					end();
 				}
-			} else {
+			} else if (obs[i] == 3) {
 				if (pos < col + 0.5 && pos > col - 0.5 && !game->get_sneak()) {
 					end();
+				}
+			} else {
+				if (pos < col + 0.5 && pos > col - 0.5) {
+					obs[i] = 0;
+					game->get_score() += 100;
 				}
 			}
 		}
