@@ -23,7 +23,7 @@ void	Object::put_obj(vector<GLuint> textureIDs, double index_z, double pos, doub
 		string	num = (*it).substr(1);
 		i = 0;
 		glBindTexture(GL_TEXTURE_2D, textureIDs[FLOOR]);
-		glBegin(GL_QUADS);
+		glBegin(GL_POLYGON);
 		while (num.find_first_not_of(' ') != string::npos) {
 			unsigned int	n = atoi(num.c_str()) - 1;
 			double	x, y, z;

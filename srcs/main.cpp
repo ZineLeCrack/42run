@@ -12,6 +12,7 @@ static bool			specials_keys[256];
 
 static void	loadObjects() {
 	game->get_objects().push_back(new Object("objects/table.obj"));
+	game->get_objects().push_back(new Object("objects/coin.obj"));
 }
 
 static void	put_score(unsigned long long n, unsigned int i) {
