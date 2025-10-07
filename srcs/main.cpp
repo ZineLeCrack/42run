@@ -347,25 +347,23 @@ static void	set_logs() {
 
 	while (i < 10) {
 		getline(bests_scores_infile, bests_scores_buff);
-		if (bests_scores_buff.size() > 0) all_bests_scores_buff.append(bests_scores_buff + '\n');
 		best_score = atoi((bests_scores_buff.substr(bests_scores_buff.find_last_of(':') + 1)).c_str());
-		cout << all_bests_scores_buff << endl;
 		if (score > best_score) {
 			all_bests_scores_buff.append(nickname + ": " + to_string(score) + " pts\n");
-			cout << all_bests_scores_buff << endl;
-			for ( ; i < 9; i++) {
+			if (bests_scores_buff.size() > 0) all_bests_scores_buff.append(bests_scores_buff + '\n');
+			for ( ; i < 8; i++) {
 				getline(bests_scores_infile, bests_scores_buff);
 				if (bests_scores_buff.size() == 0) break ;
 				all_bests_scores_buff.append(bests_scores_buff + '\n');
 			}
-			cout << all_bests_scores_buff << endl;
-
+			
 			ofstream	bests_scores_outfile("logs/bests_scores.logs");
-
+			
 			bests_scores_outfile << all_bests_scores_buff;
 			bests_scores_outfile.close();
 			break ;
 		}
+		if (bests_scores_buff.size() > 0) all_bests_scores_buff.append(bests_scores_buff + '\n');
 		i++;
 	}
 
