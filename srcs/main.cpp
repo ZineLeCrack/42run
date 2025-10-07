@@ -213,6 +213,10 @@ static void	display() {
 		game->get_pos() += 0.01;
 	}
 
+	if (game->get_height() >= 0.0) {
+		game->get_sneak() = specials_keys[GLUT_KEY_DOWN];
+	}
+
 	double	pos = game->get_pos();
 
 	if ((game->get_map()[2]->is_turn() && (d - (int)d) > 0.3) || (game->get_map()[1]->is_turn() && (d - (int)d) < 0.7)) {
@@ -241,23 +245,44 @@ static void	display() {
 		for (int i = 0; i < 3; i++) {
 			if (!obs[i]) continue;
 			double	col = (i - 1) * 1.0;
-			if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
-				double h = game->get_height();
-
-				glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
-
-				glBegin(GL_QUADS);
-
-				glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3 + h, 1.3));
-				glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9 + h, 1.3));
-				glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9 + h, 1.3));
-				glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3 + h, 1.3));
-
-				glEnd();
-
-				glutSwapBuffers();
-				glutPostRedisplay();
-				end();
+			if (obs[i] < 2) {
+				if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
+					double h = game->get_height();
+	
+					glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
+	
+					glBegin(GL_QUADS);
+	
+					glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3 + h, 1.3));
+					glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9 + h, 1.3));
+					glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9 + h, 1.3));
+					glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3 + h, 1.3));
+	
+					glEnd();
+	
+					glutSwapBuffers();
+					glutPostRedisplay();
+					end();
+				}
+			} else {
+				if (pos < col + 0.5 && pos > col - 0.5 && !game->get_sneak()) {
+					double h = game->get_height();
+	
+					glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[BOOM]);
+	
+					glBegin(GL_QUADS);
+	
+					glTexCoord2d(0.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.3 + h, 1.3));
+					glTexCoord2d(0.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(-0.4 + pos, 0.9 + h, 1.3));
+					glTexCoord2d(1.0, 1.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.9 + h, 1.3));
+					glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.4 + pos, 0.3 + h, 1.3));
+	
+					glEnd();
+	
+					glutSwapBuffers();
+					glutPostRedisplay();
+					end();
+				}
 			}
 		}
 	}
@@ -274,7 +299,7 @@ static void	display() {
 		return ;
 	}
 
-	if (keys[32] && game->get_height() >= 0.0) {
+	if (keys[32] && game->get_height() >= 0.0 && !game->get_sneak()) {
 		game->get_is_jumping() = true;
 	}
 
@@ -375,6 +400,7 @@ static void	set_logs() {
 int	main(int ac, char **av) {
 	if (ac > 2) {
 		cerr << RED "usage: ./42run (logs)" RESET << endl;
+		return 1;
 	} else if (ac == 2) {
 		if (!string("logs").compare(av[1])) {
 			ifstream	bests_scores_infile("logs/bests_scores.logs");
@@ -397,6 +423,7 @@ int	main(int ac, char **av) {
 			cout << RESET;
 		} else {
 			cerr << RED "usage: ./42run (logs)" RESET << endl;
+			return 1;
 		}
 	} else {
 		bzero(keys, 1024);
@@ -430,4 +457,5 @@ int	main(int ac, char **av) {
 		set_logs();
 		delete game;
 	}
+	return 0;
 }

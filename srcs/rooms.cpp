@@ -197,15 +197,16 @@ void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, int index_z, doubl
 	}
 }
 
-void	display_player(vector<GLuint> textureIDs, glm::mat4 MVP, double player_pos, double jumping, bool is_turning, double to_turn) {
+void	display_player(vector<GLuint> textureIDs, glm::mat4 MVP, double player_pos, double jumping, bool sneak, bool is_turning, double to_turn) {
+	double	sneak_gap = sneak * 0.3;
 	glBindTexture(GL_TEXTURE_2D, textureIDs[NPC_1]);
 
 	glBegin(GL_QUADS);
 
-	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.3 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
+	glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.3 + jumping + (is_turning ? 0.1 : 0.0) + sneak_gap, 1.5 + (is_turning ? 0.5 : 0.0)));
 	glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.9 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
 	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.9 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
-	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.3 + jumping + (is_turning ? 0.1 : 0.0), 1.5 + (is_turning ? 0.5 : 0.0)));
+	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(0.4 + player_pos + (is_turning ? to_turn : 0.0), 0.3 + jumping + (is_turning ? 0.1 : 0.0) + sneak_gap, 1.5 + (is_turning ? 0.5 : 0.0)));
 
 	glEnd();
 }
@@ -268,5 +269,5 @@ void	corridor(Game *game, bool is_turning, double to_turn) {
 		display_obs(game, game->get_map()[i], i, gap);
 	}
 
-	display_player(textureIDs, MVP, game->get_pos(), game->get_height(), is_turning, to_turn);
+	display_player(textureIDs, MVP, game->get_pos(), game->get_height(), game->get_sneak(), is_turning, to_turn);
 }

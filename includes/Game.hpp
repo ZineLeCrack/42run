@@ -16,6 +16,7 @@ class Game
 		double				_distance;
 		double				_player_pos;
 		bool				_is_jumping;
+		bool				_sneak;
 		double				_height;
 		glm::mat4			_MVP;
 
@@ -31,6 +32,7 @@ class Game
 		double				&get_distance();
 		double				&get_pos();
 		bool				&get_is_jumping();
+		bool				&get_sneak();
 		double				&get_height();
 		glm::mat4			get_MVP();
 

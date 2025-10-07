@@ -2,7 +2,7 @@
 #include "Map.hpp"
 #include "Object.hpp"
 
-Game::Game(glm::mat4 MVP): _score(0), _distance(0.0), _player_pos(0.0), _is_jumping(false), _height(0.0), _MVP(MVP) {}
+Game::Game(glm::mat4 MVP): _score(0), _distance(0.0), _player_pos(0.0), _is_jumping(false), _sneak(false), _height(0.0), _MVP(MVP) {}
 
 Game::~Game() {
 	for (vector<Map *>::iterator i = _map.begin(); i != _map.end(); i++) {
@@ -23,6 +23,8 @@ double				&Game::get_distance() { return _distance; }
 double				&Game::get_pos() { return _player_pos; }
 
 bool				&Game::get_is_jumping() { return _is_jumping; }
+
+bool				&Game::get_sneak() { return _sneak; }
 
 double				&Game::get_height() { return _height; }
 

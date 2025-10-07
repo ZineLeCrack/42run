@@ -37,7 +37,7 @@ void	Object::put_obj(double index_z, double pos, double gap, glm::mat4 MVP) {
 			vertex = vertex.substr(vertex.find_first_not_of(' '));
 			z = atof(vertex.c_str());
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(x + pos, y, index_z + z + 2.0 - gap));
+			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(x + pos, y, index_z + z + 0.8 - gap));
 
 			if (num.find_first_not_of(' ') == string::npos) break ;
 			num = num.substr(num.find_first_not_of(' '));
