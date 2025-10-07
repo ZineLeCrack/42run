@@ -7,7 +7,7 @@ GLFLAGS = -lGL -lGLU -lglut -lGLEW -lpng
 SRCDIR = srcs
 OBJDIR = objs
 
-SRCS = Game.cpp Map.cpp Object.cpp rooms.cpp utils.cpp main.cpp
+SRCS = Game.cpp Map.cpp Object.cpp load_images.cpp rooms.cpp utils.cpp main.cpp
 SRCS := $(addprefix $(SRCDIR)/, $(SRCS))
 
 OBJS = $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)

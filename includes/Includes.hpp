@@ -28,6 +28,8 @@ class Map;
 class Object;
 
 /*------- FUNCTIONS ------ */
+void		loadTextures(Game *game);
+
 void		corridor(Game *game, bool is_turning, double to_turn);
 void		applyMVP(const glm::mat4 &MVP, const glm::vec3 &v);
 int			randint(int x);
