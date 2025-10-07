@@ -258,33 +258,28 @@ static void	set_logs() {
 }
 
 int	main(int ac, char **av) {
-	if (ac > 2) {
+	if (ac > 2 || (ac != 1 && string("logs").compare(av[1]))) {
 		cerr << RED "usage: ./42run (logs)" RESET << endl;
 		return 1;
 	} else if (ac == 2) {
-		if (!string("logs").compare(av[1])) {
-			ifstream	bests_scores_infile("logs/bests_scores.logs");
-			string	scores_buff;
+		ifstream	bests_scores_infile("logs/bests_scores.logs");
+		string	scores_buff;
 
-			cout << YELLOW "-----===== BESTS SCORES =====-----" MAGENTA << endl;
+		cout << YELLOW "-----===== BESTS SCORES =====-----" MAGENTA << endl;
 
-			for (int i = 0; i < 10 && getline(bests_scores_infile, scores_buff); i++) {
-				cout << i + 1 << ". " << scores_buff << endl;
-			}
-
-			ifstream	lasts_scores_infile("logs/lasts_scores.logs");
-			
-			cout << RESET << endl;
-			cout << YELLOW "-----===== LASTS SCORES =====-----" BLUE << endl;
-
-			for (int i = 0; i < 10 && getline(lasts_scores_infile, scores_buff); i++) {
-				cout << i + 1 << ". " << scores_buff << endl;
-			}
-			cout << RESET;
-		} else {
-			cerr << RED "usage: ./42run (logs)" RESET << endl;
-			return 1;
+		for (int i = 0; i < 10 && getline(bests_scores_infile, scores_buff); i++) {
+			cout << i + 1 << ". " << scores_buff << endl;
 		}
+
+		ifstream	lasts_scores_infile("logs/lasts_scores.logs");
+		
+		cout << RESET << endl;
+		cout << YELLOW "-----===== LASTS SCORES =====-----" BLUE << endl;
+
+		for (int i = 0; i < 10 && getline(lasts_scores_infile, scores_buff); i++) {
+			cout << i + 1 << ". " << scores_buff << endl;
+		}
+		cout << RESET;
 	} else {
 		bzero(keys, 1024);
 		bzero(specials_keys, 1024);
