@@ -245,7 +245,7 @@ static void	display() {
 		for (int i = 0; i < 3; i++) {
 			if (!obs[i]) continue;
 			double	col = (i - 1) * 1.0;
-			if (obs[i] < 2) {
+			if (obs[i] < 3) {
 				if (game->get_height() > -0.1 && (pos < col + 0.35 && pos > col - 0.35)) {
 					double h = game->get_height();
 	
@@ -352,9 +352,17 @@ static void keyup(unsigned char key, int x, int y) {
 static void	set_logs() {
 	int	score = (int)(game->get_score() * 0.1);
 
+	bool	ok = false;
 	string	nickname;
-	cout << YELLOW << "Enter your nickname: " RESET << endl;
-	getline(cin, nickname);
+	while (!ok) {
+		cout << YELLOW << "Enter your nickname: " RESET << endl;
+		getline(cin, nickname);
+		if (nickname.size() > 12 || nickname.size() < 3 || nickname.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_") != string::npos) {
+			cerr << RED "Invalid nickname: it musts contain alphanumerics chars only or '_' and its size musts be between 3 and 12 characters." RESET << endl;
+		} else {
+			ok = true;
+		}
+	}
 
 	stringstream	lasts_scores_buff;
 	ifstream		lasts_scores_infile("logs/lasts_scores.logs");

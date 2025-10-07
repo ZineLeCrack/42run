@@ -17,10 +17,12 @@ Object::Object(const char *filename) {
 
 Object::~Object() {}
 
-void	Object::put_obj(double index_z, double pos, double gap, glm::mat4 MVP) {
-	glDisable(GL_TEXTURE_2D);
+void	Object::put_obj(vector<GLuint> textureIDs, double index_z, double pos, double gap, glm::mat4 MVP) {
+	int	i;
 	for (vector<string>::iterator it = _faces.begin(); it != _faces.end(); it++) {
 		string	num = (*it).substr(1);
+		i = 0;
+		glBindTexture(GL_TEXTURE_2D, textureIDs[FLOOR]);
 		glBegin(GL_QUADS);
 		while (num.find_first_not_of(' ') != string::npos) {
 			unsigned int	n = atoi(num.c_str()) - 1;
@@ -37,14 +39,14 @@ void	Object::put_obj(double index_z, double pos, double gap, glm::mat4 MVP) {
 			vertex = vertex.substr(vertex.find_first_not_of(' '));
 			z = atof(vertex.c_str());
 
-			glColor3d(0.8, 0.8, 0.8); applyMVP(MVP, glm::vec3(x + pos, y, index_z + z + 0.8 - gap));
+			glTexCoord2d(i % 4 > 1, i % 4 == 1 || i % 4 == 2); applyMVP(MVP, glm::vec3(x + pos, y, index_z + z + 0.8 - gap));
 
 			if (num.find_first_not_of(' ') == string::npos) break ;
 			num = num.substr(num.find_first_not_of(' '));
 			if (num.find_first_of(' ') == string::npos) break ;
 			num = num.substr(num.find_first_of(' '));
+			i++;
 		}
 		glEnd();
 	}
-	glEnable(GL_TEXTURE_2D);
 }

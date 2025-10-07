@@ -14,5 +14,5 @@ class Object
 		Object(const char *filename);
 		~Object();
 
-		void	put_obj(double index_z, double pos, double gap, glm::mat4 MVP);
+		void	put_obj(vector<GLuint> textureIDs, double index_z, double pos, double gap, glm::mat4 MVP);
 };
