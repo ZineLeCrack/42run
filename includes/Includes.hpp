@@ -83,3 +83,17 @@ using namespace std;
 #define GALAXY					31
 
 #define KEY_ESC					27
+
+#define VAL_OBS					1
+#define SPIKE					2
+#define TABLE					3
+#define COIN_42					4
+
+#define NO_HOLE					0
+#define LAVA_TRAP				1
+#define GALAXY_HOLE				2
+
+#define NO_TURN					0
+#define IS_TURN					1
+#define TURN_LEFT				2
+#define TURN_RIGHT				3

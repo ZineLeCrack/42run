@@ -40,14 +40,14 @@ void				Game::gen_start() {
 }
 
 void				Game::gen_next() {
-	int	turn = randint(60) > 0 ? 0 : 1;
+	int	turn = randint(60) > 0 ? NO_TURN : IS_TURN;
 	int	*obs = new int[3];
-	int	hole = 0;
+	int	hole = NO_HOLE;
 
 	bzero(obs, sizeof(int) * 3);
-	if (!turn) {
-		hole = randint(12) > 0 ? 0 : randint(2) + 1;
-		if (!hole) {
+	if (turn == NO_TURN) {
+		hole = randint(12) > 0 ? NO_HOLE : randint(2) + 1;
+		if (hole == NO_HOLE) {
 			if (!randint(8)) obs[0] = randint(4) + 1;
 			if (!randint(8)) obs[1] = randint(4) + 1;
 			if (!randint(8)) obs[2] = randint(4) + 1;

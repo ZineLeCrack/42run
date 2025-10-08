@@ -3,7 +3,7 @@
 void	floor(vector<Map*> map, vector<GLuint> textureIDs, glm::mat4 MVP, int index_z, double gap) {
 
 	int	hole = map[index_z]->is_hole();
-	if (hole < 2) {
+	if (hole == NO_HOLE || hole == LAVA_TRAP) {
 		glBindTexture(GL_TEXTURE_2D, textureIDs[hole == 0 ? FLOOR : LAVA]);
 
 		glBegin(GL_QUADS);
@@ -13,7 +13,7 @@ void	floor(vector<Map*> map, vector<GLuint> textureIDs, glm::mat4 MVP, int index
 		glTexCoord2d((hole == 1 ? (index_z % 4 == 0 || index_z % 4 == 3) : 0.0), (hole == 1 ? (index_z % 4 > 1) : 1.0)); applyMVP(MVP, glm::vec3(0.5, 1.0, index_z + 0.0 - gap));
 		glTexCoord2d((hole == 1 ? (index_z % 4 > 1) : 0.0), (hole == 1 ? (index_z % 4 == 1 || index_z % 4 == 2) : 0.0)); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 0.0 - gap));
 
-		if (map[index_z]->is_turn() != 1) {
+		if (map[index_z]->is_turn() != IS_TURN) {
 			glTexCoord2d((hole == 1 ? (index_z % 4 == 1 || index_z % 4 == 2) : 1.0), (hole == 1 ? (index_z % 4 < 2) : 0.0)); applyMVP(MVP, glm::vec3(-0.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d((hole == 1 ? (index_z % 4 < 2) : 1.0), (hole == 1 ? (index_z % 4 == 0 || index_z % 4 == 3) : 1.0)); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 1.0 - gap));
 			glTexCoord2d((hole == 1 ? (index_z % 4 == 0 || index_z % 4 == 3) : 0.0), (hole == 1 ? (index_z % 4 > 1) : 1.0)); applyMVP(MVP, glm::vec3(-1.5, 1.0, index_z + 0.0 - gap));
@@ -30,7 +30,7 @@ void	floor(vector<Map*> map, vector<GLuint> textureIDs, glm::mat4 MVP, int index
 		glBindTexture(GL_TEXTURE_2D, textureIDs[GALAXY]);
 		glBegin(GL_QUADS);
 
-		if (index_z < 29 && map[index_z + 1]->is_hole() == 2) {
+		if (index_z < 29 && map[index_z + 1]->is_hole() == GALAXY_HOLE) {
 			glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 2.0, index_z + 0.0 - gap));
 			glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 2.0, index_z + 0.0 - gap));
 			glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-1.5, 2.0, index_z + 1.0 - gap));
@@ -85,7 +85,7 @@ void	celling(int turn, vector<GLuint> textureIDs, glm::mat4 MVP, int index_z, do
 	glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(0.5, 0.0, index_z + 0.0 - gap));
 	glTexCoord2d(1.0, 0.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 0.0 - gap));
 
-	if (turn != 1) {
+	if (turn != IS_TURN) {
 		glTexCoord2d(0.0, 0.0); applyMVP(MVP, glm::vec3(-1.5, 0.0, index_z + 1.0 - gap));
 		glTexCoord2d(0.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 1.0 - gap));
 		glTexCoord2d(1.0, 1.0); applyMVP(MVP, glm::vec3(-0.5, 0.0, index_z + 0.0 - gap));
@@ -104,7 +104,7 @@ void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, int index_z, doubl
 	int		turn = map->is_turn();
 	double	mov = 0.0;
 
-	if (turn) {
+	if (turn != NO_TURN) {
 		glBindTexture(GL_TEXTURE_2D, textureIDs[LOGO_42_1]);
 
 		glBegin(GL_QUADS);
@@ -123,7 +123,7 @@ void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, int index_z, doubl
 		mov++;
 	}
 
-	if (turn == 2) {
+	if (turn == TURN_LEFT) {
 		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
 
 		glBegin(GL_QUADS);
@@ -147,7 +147,7 @@ void	wall(vector<GLuint> textureIDs, glm::mat4 MVP, Map *map, int index_z, doubl
 		glEnd();
 	}
 
-	else if (turn == 3) {
+	else if (turn == TURN_RIGHT) {
 		glBindTexture(GL_TEXTURE_2D, textureIDs[map->get_left_wall_tex()]);
 
 		glBegin(GL_QUADS);
@@ -218,7 +218,7 @@ void	display_obs(Game *game, Map *map, double index_z, double gap) {
 	for (int j = 0; j < 3; j++) {
 		double	pos = (j - 1) * 0.8;
 
-		if (obs[j] == 1) {
+		if (obs[j] == VAL_OBS) {
 			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[VAL]);
 
 			glBegin(GL_QUADS);
@@ -230,7 +230,7 @@ void	display_obs(Game *game, Map *map, double index_z, double gap) {
 
 			glEnd();
 		}
-		else if (obs[j] == 2) {
+		else if (obs[j] == SPIKE) {
 			glBindTexture(GL_TEXTURE_2D, game->get_textureIDs()[METAL]);
 			glBegin(GL_TRIANGLES);
 
@@ -247,9 +247,9 @@ void	display_obs(Game *game, Map *map, double index_z, double gap) {
 			glTexCoord2d(1.0, 0.0); applyMVP(game->get_MVP(), glm::vec3(0.0 + pos, 0.5, index_z + 0.7 - gap));
 
 			glEnd();
-		} else if (obs[j] == 3) {
+		} else if (obs[j] == TABLE) {
 			game->get_objects()[0]->put_obj(game->get_textureIDs(), index_z, pos, gap, game->get_MVP());
-		} else if (obs[j] == 4) {
+		} else if (obs[j] == COIN_42) {
 			game->get_objects()[1]->put_obj(game->get_textureIDs(), index_z, pos, gap, game->get_MVP());
 		}
 	}
