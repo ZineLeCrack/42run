@@ -8,6 +8,10 @@ Game::~Game() {
 	for (vector<Map *>::iterator i = _map.begin(); i != _map.end(); i++) {
 		delete (*i);
 	}
+
+	for (vector<Object *>::iterator i = _objects.begin(); i != _objects.end(); i++) {
+		delete (*i);
+	}
 }
 
 vector<GLuint>		&Game::get_textureIDs() { return _textureIDs; }
